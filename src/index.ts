@@ -22,11 +22,11 @@ function doesConfigFileExists() {
 function findInJsonPackage(lib: string | string[]) {
   const dependencies = getProjectDependencies();
   if (typeof lib === 'string') {
-    return dependencies.find((aDependency) =>  aDependency === lib);
+    return dependencies.find((aDependency) => aDependency === lib);
   } else {
     for (const aLib of lib) {
       const foundDependency = dependencies.find((aDependency) => aDependency === aLib)
-      if(foundDependency?.length) {
+      if (foundDependency?.length) {
         return foundDependency;
       }
     }
@@ -82,23 +82,62 @@ async function buildConfig() {
       },
       {
         type: 'list',
-        name: 'componentFileType',
-        message: 'What styling technology do you use ? Enter N if ...',
-        choices: ['css', 'scss', 'less', 'styled component', 'other'],
-        default: findInJsonPackage('typescript') ? '.tsx' : '.jsx',
+        name: 'componentSuffixFileExtension',
+        message({ componentFileExtension }) {
+          return `Would you like to add a suffix to your component ? (example: Button.component${componentFileExtension})`
+        },
+        choices({ componentFileExtension }) {
+          return [`.component${componentFileExtension}`, 'none']
+        },
+        default: `.component${findInJsonPackage('typescript') ? '.tsx' : '.jsx'}`,
       },
       {
         type: 'list',
         name: 'styleSheetFileExtension',
-        message: 'What extension do you prefer ?',
-        choices: ['.style.scss', '.module.scss', '.styled.scss', 'other'],
-        default: 'MyComponent.style.scss',
+        message: 'What styling technology do you use ? Enter N if ...',
+        choices: ['.css', '.scss', '.less', 'styled component', 'none'],
+        default: findInJsonPackage(['sass', 'less', 'scss', 'styled-component']),
+      },
+      {
+        type: 'list',
+        name: 'styleSheetFileSuffixExtension',
+        message: 'What extension do you prefer ? (example: Button.style.scss)',
+        choices({ styleSheetFileExtension, componentFileExtension }) {
+          const styleSheetExtension = styleSheetFileExtension === 'styled component' ? componentFileExtension : styleSheetFileExtension;
+          return [`.style${styleSheetExtension}`, `.module${styleSheetExtension}`, `.styled${styleSheetExtension}`, 'none']
+        },
+        default: 'Button.style.scss',
+      },
+      {
+        type: 'list',
+        name: 'testingFileExtension',
+        message({ componentFileExtension}) {
+          return `Choose your prefered file extension ? (example: Button.spec${componentFileExtension})`;
+        }, 
+        choices({ componentFileExtension}) { 
+          return [`.spec${componentFileExtension}`, `.test${componentFileExtension}`, 'none']
+        },
+        default: 'Button.test.scss',
       },
     ]);
   console.log(isHumanResponse);
+  const { componentFileExtension, componentSuffixFileExtension,
+    styleSheetFileExtension, testingFileExtension } = isHumanResponse;
+  const BaseComponentName = 'Button'
+  // projectName: 'cli',
+  // projectType: 'Next.js',
+  // componentEntryPoint: './src/components',
+  // componentFileExtension: '.tsx',
+  // componentSuffixFileExtension: '.component.tsx',
+  // componentFileType: 'less',
+  // styleSheetFileExtension: '.module.scss',
+  // testingLibrary: 'jest',
+  // testingFileExtension: '.spec.tsx'
+  console.log(`Button.component.tsx`);
+  console.log(`${BaseComponentName}`)
 }
 (async () => {
-  if(!isReactOrNextInstalled()) {
+  if (!isReactOrNextInstalled()) {
     return console.log('No React or Next.js project could be found, please install one of theme before going further');
   }
   if (doesConfigFileExists()) {
