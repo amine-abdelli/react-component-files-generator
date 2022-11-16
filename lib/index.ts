@@ -74,7 +74,7 @@ function findInJsonPackage(lib: string | string[]) {
 }
 
 function writeJsonConfigFile(promptResponse: IConfigObject) {
-  fs.writeFile("rfsb.config.json", JSON.stringify(promptResponse), 'utf8', function (err) {
+  fs.writeFile("rfsb.config.json", JSON.stringify(promptResponse, null, 4), 'utf8', function (err) {
     if (err) {
       log(chalk.bold("An error occured while writing JSON Object to File."));
       return log(chalk.bold(err));
