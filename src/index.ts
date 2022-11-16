@@ -18,7 +18,6 @@ function isReactOrNextInstalled() {
 function doesConfigFileExists() {
   return fs.readdirSync('.').includes('rfcs.config.json');
 }
-
 // Also handle the case where 2 different libraries are installed e.g react and next.js
 function findInJsonPackage(lib: string | string[]) {
   const dependencies = getProjectDependencies();
@@ -73,6 +72,27 @@ async function buildConfig() {
         name: 'componentEntryPoint',
         message: 'Which folder is the entry point of your components? (by default "./src/components")',
         default: './src/components',
+      },
+      {
+        type: 'list',
+        name: 'componentFileExtension',
+        message: 'What is the file extension of your components',
+        choices: ['.jsx', '.tsx', '.js', '.ts'],
+        default: findInJsonPackage('typescript') ? '.tsx' : '.jsx',
+      },
+      {
+        type: 'list',
+        name: 'componentFileType',
+        message: 'What styling technology do you use ? Enter N if ...',
+        choices: ['css', 'scss', 'less', 'styled component', 'other'],
+        default: findInJsonPackage('typescript') ? '.tsx' : '.jsx',
+      },
+      {
+        type: 'list',
+        name: 'styleSheetFileExtension',
+        message: 'What extension do you prefer ?',
+        choices: ['.style.scss', '.module.scss', '.styled.scss', 'other'],
+        default: 'MyComponent.style.scss',
       },
     ]);
   console.log(isHumanResponse);
