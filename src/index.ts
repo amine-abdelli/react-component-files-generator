@@ -2,6 +2,10 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
 import { IConfigObject, IPromptResponse } from './types';
+import chalk from 'chalk';
+
+const log = console.log;
+
 
 function getProjectDependencies() {
   const JsonPackage = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
@@ -51,7 +55,7 @@ function doesConfigFileExists() {
 }
 
 function quitPrompt() {
-  console.log('Goodbye !');
+  log(chalk.bold('Goodbye !'));
 }
 
 // Also handle the case where 2 different libraries are installed e.g react and next.js
@@ -72,10 +76,10 @@ function findInJsonPackage(lib: string | string[]) {
 function writeJsonConfigFile(promptResponse: IConfigObject) {
   fs.writeFile("rfsb.config.json", JSON.stringify(promptResponse), 'utf8', function (err) {
     if (err) {
-      console.log("An error occured while writing JSON Object to File.");
-      return console.log(err);
+      log(chalk.bold("An error occured while writing JSON Object to File."));
+      return log(chalk.bold(err));
     }
-    console.log("rfsb.config.json created successfully !");
+    log(chalk.bold("rfsb.config.json created successfully !"));
   });
 }
 
@@ -92,7 +96,7 @@ async function buildConfig(promptResponse: IPromptResponse) {
       type: 'confirm',
       name: 'overwrite',
       message() {
-        return `Here is what your component folder will look like, but you will always have the option to select only what you need ! Does that suit you ?
+        return `Here is what your component folder will look like, but you will always have the option to select only those that you need ! Does that suit you ?
     ./src/component/
           - ${BaseComponentName}${componentSuffixFileExtension}
           - ${BaseComponentName}.props${deductedFileExtension}
@@ -155,7 +159,7 @@ async function triggerPromptOption() {
         type: 'list',
         name: 'componentSuffixFileExtension',
         message({ componentFileExtension }) {
-          return `Would you like to add a suffix to your component ? (example: Button.component${componentFileExtension})`
+          return `Would you like to add a suffix to your component ? (example: ${log(chalk.blue(`Button.component${componentFileExtension}`))})`
         },
         choices({ componentFileExtension }) {
           return [`.component${componentFileExtension}`, 'none']
@@ -195,8 +199,8 @@ async function triggerPromptOption() {
   buildConfig(promptResponse)
 }
 (async () => {
-  if (!isReactOrNextInstalled()) {
-    return console.log('No React or Next.js project could be found, please install one of theme before going further');
+  if (isReactOrNextInstalled()) {
+    return log(chalk.bold('No React or Next.js project could be found, please install one of theme before going further'));
   }
   if (doesConfigFileExists()) {
     const overwriteResponse = await checkConfigFilePrompt();
