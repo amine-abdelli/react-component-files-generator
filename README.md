@@ -19,22 +19,22 @@ rcfs --init
     * next
     * react
   * [ ] if react Do you use views in your project
-  * [ ] Which folder is the entry point of your components
+  * [X] Which folder is the entry point of your components
     * default ./src/components
-  * [ ] .jsx .tsx .js .ts
+  * [X] .jsx .tsx .js .ts
   * [ ] Which folder is the entry point of your pages (for next js only)
   * [ ] Which folder is the entry point of your global stylesheet (press N if you wish not to import anything in your stylesheets)
-  * [ ] css or scss or less or style component ?
+  * [X] css or scss or less or style component ?
     * [ ] CSS
     * [ ] SCSS
     * [ ] LESS
     * [ ] styledcomponent ?
-  * [ ] Do you use module css or normal css, if you don't know press N ? // Or GO and look in package.json if more than one library ask what library is used
-  * [ ] What testing library are you currently using // Or GO and look in package.json if more than one library ask what library is used
+  * [X] Do you use module css or normal css, if you don't know press N ? // Or GO and look in package.json if more than one library ask what library is used
+  * [X] What testing library are you currently using // Or GO and look in package.json if more than one library ask what library is used
     * [ ] Jest
     * [ ] Mocha
   * [ ] Jest
-  * [ ] Would you like to give a suffix to your components ?
+  * [X] Would you like to give a suffix to your components ?
     * default MyComponent.component.tsx
     * default MyComponent.style.tsx
     * default MyComponent.props.tsx
