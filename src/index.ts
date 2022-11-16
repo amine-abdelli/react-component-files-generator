@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
+import { IConfigObject, IPromptResponse } from './types';
 
 function getProjectDependencies() {
   const JsonPackage = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
@@ -9,6 +10,36 @@ function getProjectDependencies() {
     ...JsonPackage.devDependencies
   });
 }
+function formatResponseObjectToConfigFile({
+  componentFileExtension, projectName,
+  componentSuffixFileExtension, styleSheetFileExtension, styleSheetFileSuffixExtension, testingFileExtension, componentEntryPoint
+}: IPromptResponse) {
+  const deductedExtension: '.ts' | '.js' = componentFileExtension === 'tsx' || componentFileExtension === 'ts' ? '.ts' : '.js'
+  return {
+    name: projectName,
+    componentEntryPoint: componentEntryPoint,
+    component: {
+      extension: componentFileExtension,
+      suffixExtension: componentSuffixFileExtension
+    },
+    style: {
+      extension: styleSheetFileExtension,
+      suffixExtension: styleSheetFileSuffixExtension
+    },
+    test: {
+      extension: componentFileExtension,
+      suffixExtension: testingFileExtension
+    },
+    props: {
+      extension: deductedExtension,
+      suffixExtension: `.props${deductedExtension}`
+    },
+    fixture: {
+      extension: deductedExtension,
+      suffixExtension: `.fixture${deductedExtension}`
+    }
+  }
+}
 
 function isReactOrNextInstalled() {
   const dependencies = getProjectDependencies();
@@ -16,8 +47,13 @@ function isReactOrNextInstalled() {
 }
 
 function doesConfigFileExists() {
-  return fs.readdirSync('.').includes('rfcs.config.json');
+  return fs.readdirSync('.').includes('rfsb.config.json');
 }
+
+function quitPrompt() {
+  console.log('Goodbye !');
+}
+
 // Also handle the case where 2 different libraries are installed e.g react and next.js
 function findInJsonPackage(lib: string | string[]) {
   const dependencies = getProjectDependencies();
@@ -32,11 +68,33 @@ function findInJsonPackage(lib: string | string[]) {
     }
   }
 }
+
+function writeJsonConfigFile(promptResponse: IConfigObject) {
+  fs.writeFile("rfsb.config.json", JSON.stringify(promptResponse), 'utf8', function (err) {
+    if (err) {
+      console.log("An error occured while writing JSON Object to File.");
+      return console.log(err);
+    }
+    console.log("rfsb.config.json created successfully !");
+  });
+}
+
 const CURRENT_WORKING_DIRECTORY = process.cwd();
 // Get the working directory and keep the last name, e.g /home/workspace/my-project would return my-project
 const defaultProjectName = path.basename(CURRENT_WORKING_DIRECTORY);
-function quitPrompt() {
-  console.log('Goodbye !');
+
+function buildConfig(promptResponse: IPromptResponse) {
+  const { componentFileExtension, componentSuffixFileExtension, styleSheetFileSuffixExtension, testingFileExtension } = promptResponse;
+  const BaseComponentName = 'Button';
+  const deductedFileExtension = componentFileExtension === 'tsx' || componentFileExtension === 'ts' ? '.ts' : '.js';
+  console.log('Here is what your component folder will look like !');
+  console.log(`${BaseComponentName}${componentSuffixFileExtension}`);
+  console.log(`${BaseComponentName}.props${deductedFileExtension}`);
+  console.log(`${BaseComponentName}${styleSheetFileSuffixExtension}`);
+  console.log(`${BaseComponentName}${testingFileExtension}`);
+  console.log(`${BaseComponentName}.fixture${deductedFileExtension}`);
+  const configObject = formatResponseObjectToConfigFile(promptResponse)
+  writeJsonConfigFile(configObject);
 }
 
 async function checkConfigFilePrompt() {
@@ -51,8 +109,8 @@ async function checkConfigFilePrompt() {
   return overwriteResponse;
 }
 
-async function buildConfig() {
-  const isHumanResponse = await inquirer
+async function triggerPromptOption() {
+  const promptResponse = await inquirer
     .prompt([
       {
         type: 'text',
@@ -111,30 +169,17 @@ async function buildConfig() {
       {
         type: 'list',
         name: 'testingFileExtension',
-        message({ componentFileExtension}) {
+        message({ componentFileExtension }) {
           return `Choose your prefered file extension ? (example: Button.spec${componentFileExtension})`;
-        }, 
-        choices({ componentFileExtension}) { 
+        },
+        choices({ componentFileExtension }) {
           return [`.spec${componentFileExtension}`, `.test${componentFileExtension}`, 'none']
         },
         default: 'Button.test.scss',
       },
     ]);
-  console.log(isHumanResponse);
-  const { componentFileExtension, componentSuffixFileExtension,
-    styleSheetFileExtension, testingFileExtension } = isHumanResponse;
-  const BaseComponentName = 'Button'
-  // projectName: 'cli',
-  // projectType: 'Next.js',
-  // componentEntryPoint: './src/components',
-  // componentFileExtension: '.tsx',
-  // componentSuffixFileExtension: '.component.tsx',
-  // componentFileType: 'less',
-  // styleSheetFileExtension: '.module.scss',
-  // testingLibrary: 'jest',
-  // testingFileExtension: '.spec.tsx'
-  console.log(`Button.component.tsx`);
-  console.log(`${BaseComponentName}`)
+
+  buildConfig(promptResponse)
 }
 (async () => {
   if (!isReactOrNextInstalled()) {
@@ -143,12 +188,12 @@ async function buildConfig() {
   if (doesConfigFileExists()) {
     const overwriteResponse = await checkConfigFilePrompt();
     if (overwriteResponse.overwrite) {
-      buildConfig();
+      triggerPromptOption();
     } else {
       quitPrompt();
     }
   } else {
-    buildConfig();
+    triggerPromptOption();
   }
 })()
 
