@@ -83,18 +83,31 @@ const CURRENT_WORKING_DIRECTORY = process.cwd();
 // Get the working directory and keep the last name, e.g /home/workspace/my-project would return my-project
 const defaultProjectName = path.basename(CURRENT_WORKING_DIRECTORY);
 
-function buildConfig(promptResponse: IPromptResponse) {
+async function buildConfig(promptResponse: IPromptResponse) {
   const { componentFileExtension, componentSuffixFileExtension, styleSheetFileSuffixExtension, testingFileExtension } = promptResponse;
   const BaseComponentName = 'Button';
   const deductedFileExtension = componentFileExtension === 'tsx' || componentFileExtension === 'ts' ? '.ts' : '.js';
-  console.log('Here is what your component folder will look like !');
-  console.log(`${BaseComponentName}${componentSuffixFileExtension}`);
-  console.log(`${BaseComponentName}.props${deductedFileExtension}`);
-  console.log(`${BaseComponentName}${styleSheetFileSuffixExtension}`);
-  console.log(`${BaseComponentName}${testingFileExtension}`);
-  console.log(`${BaseComponentName}.fixture${deductedFileExtension}`);
-  const configObject = formatResponseObjectToConfigFile(promptResponse)
-  writeJsonConfigFile(configObject);
+  const overwriteResponse = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'overwrite',
+      message() {
+        return `Here is what your component folder will look like, but you will always have the option to select only what you need ! Does that suit you ?
+    ./src/component/
+          - ${BaseComponentName}${componentSuffixFileExtension}
+          - ${BaseComponentName}.props${deductedFileExtension}
+          - ${BaseComponentName}${styleSheetFileSuffixExtension}
+          - ${BaseComponentName}${testingFileExtension}
+          - ${BaseComponentName}.fixture${deductedFileExtension}
+        `;
+      },
+      default: true
+    }
+  ])
+  if(overwriteResponse.overwrite) {
+    const configObject = formatResponseObjectToConfigFile(promptResponse)
+    writeJsonConfigFile(configObject);
+  };
 }
 
 async function checkConfigFilePrompt() {
