@@ -2,7 +2,7 @@
   "name": "react-folder-structure-builder",
   "description": "A CLI to help generate react folder structure for your project",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "lib/index.ts",
   "author": "Amine Abdelli <amine.abdelli@outlook.fr>",
   "keywords": [
     "react",
@@ -14,7 +14,7 @@
     "react structure"
   ],
   "scripts": {
-    "test": "ts-node-dev -r --no-notify --respawn --exit-child -r tsconfig-paths/register --transpile-only src/index"
+    "test": "ts-node-dev -r --no-notify --respawn --exit-child -r tsconfig-paths/register --transpile-only lib/index"
   },
   "license": "MIT",
   "devDependencies": {
