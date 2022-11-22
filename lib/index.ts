@@ -6,7 +6,6 @@ import chalk from 'chalk';
 
 const log = console.log;
 
-
 function getProjectDependencies() {
   const JsonPackage = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
   return Object.keys({
@@ -14,6 +13,7 @@ function getProjectDependencies() {
     ...JsonPackage.devDependencies
   });
 }
+
 function formatResponseObjectToConfigFile({
   componentFileExtension, projectName,
   componentSuffixFileExtension, styleSheetFileExtension, styleSheetFileSuffixExtension, testingFileExtension, componentEntryPoint
@@ -59,7 +59,7 @@ function quitPrompt() {
 }
 
 // Also handle the case where 2 different libraries are installed e.g react and next.js
-function findInJsonPackage(lib: string | string[]) {
+function findDependenciesFromJsonPackage(lib: string | string[]) {
   const dependencies = getProjectDependencies();
   if (typeof lib === 'string') {
     return dependencies.find((aDependency) => aDependency === lib);
@@ -140,7 +140,7 @@ async function triggerPromptOption() {
         name: 'projectType',
         message: 'Chose the correct framework ?',
         choices: ['React', 'Next.js'],
-        default: findInJsonPackage(['react', 'next']) === 'react' ? 'React' : 'Next.js',
+        default: findDependenciesFromJsonPackage(['react', 'next']) === 'react' ? 'React' : 'Next.js',
       },
       {
         type: 'text',
@@ -153,7 +153,7 @@ async function triggerPromptOption() {
         name: 'componentFileExtension',
         message: 'What is the file extension of your components',
         choices: ['.jsx', '.tsx', '.js', '.ts'],
-        default: findInJsonPackage('typescript') ? '.tsx' : '.jsx',
+        default: findDependenciesFromJsonPackage('typescript') ? '.tsx' : '.jsx',
       },
       {
         type: 'list',
@@ -164,14 +164,14 @@ async function triggerPromptOption() {
         choices({ componentFileExtension }) {
           return [`.component${componentFileExtension}`, 'none']
         },
-        default: `.component${findInJsonPackage('typescript') ? '.tsx' : '.jsx'}`,
+        default: `.component${findDependenciesFromJsonPackage('typescript') ? '.tsx' : '.jsx'}`,
       },
       {
         type: 'list',
         name: 'styleSheetFileExtension',
         message: 'What styling technology do you use ? Enter N if ...',
         choices: ['.css', '.scss', '.less', 'styled component', 'none'],
-        default: findInJsonPackage(['sass', 'less', 'scss', 'styled-component']),
+        default: findDependenciesFromJsonPackage(['sass', 'less', 'scss', 'styled-component']),
       },
       {
         type: 'list',
