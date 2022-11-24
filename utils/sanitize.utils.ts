@@ -1,5 +1,5 @@
-import { PathPolicyRegex } from '../constants';
-import { ComponentNameTemplate } from '../lib/build';
+import { ComponentNameTemplate, PathPolicyRegex } from '../constants';
+
 import { IConfigObject } from '../lib/types';
 
 /**
