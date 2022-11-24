@@ -23,4 +23,13 @@ function buildFile(path: string, content: string) {
   });
 }
 
-export { createDirIfNotExist, buildFile };
+/**
+ * Read template file based on template key
+ * @param key 'component' | 'style' | 'test' | 'props' | 'fixture'
+ * @returns a template file
+ */
+function readTemplateFile(key: string): string {
+  return fs.readFileSync(`./templates/${key}.template.ts`, { encoding: 'utf8' });
+}
+
+export { createDirIfNotExist, buildFile, readTemplateFile };
