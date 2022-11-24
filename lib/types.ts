@@ -3,23 +3,30 @@ export interface IConfigObject {
     componentEntryPoint: string,
     component: {
       extension: string,
-      suffixExtension: string
+      suffixExtension: string,
+      export?: string,
+      path?: string
     },
     style: {
       extension: string,
-      suffixExtension: string
+      suffixExtension: string,
+      import?: string,
+      path?: string
     },
     test: {
       extension: string,
-      suffixExtension: string
+      suffixExtension: string,
+      path?: string
     },
     props: {
       extension: string,
-      suffixExtension: string
+      suffixExtension: string,
+      path?: string
     },
     fixture: {
       extension: string,
-      suffixExtension: string
+      suffixExtension: string,
+      path?: string
     }
 }
 

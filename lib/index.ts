@@ -18,29 +18,36 @@ function formatResponseObjectToConfigFile({
   componentFileExtension, projectName,
   componentSuffixFileExtension, styleSheetFileExtension, styleSheetFileSuffixExtension, testingFileExtension, componentEntryPoint
 }: IPromptResponse) {
-  const deductedExtension: '.ts' | '.js' = componentFileExtension === 'tsx' || componentFileExtension === 'ts' ? '.ts' : '.js'
+  const deductedExtension: '.ts' | '.js' = (componentFileExtension === '.tsx' || componentFileExtension === '.ts') ? '.ts' : '.js'
   return {
     name: projectName,
     componentEntryPoint: componentEntryPoint,
     component: {
       extension: componentFileExtension,
-      suffixExtension: componentSuffixFileExtension
+      suffixExtension: componentSuffixFileExtension,
+      export: 'module',
+      // "path":            /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     },
     style: {
       extension: styleSheetFileExtension,
-      suffixExtension: styleSheetFileSuffixExtension
+      suffixExtension: styleSheetFileSuffixExtension,
+      import: 'default',
+      // "path":            /* Specify a custom file folder path here (e.g ./theme/scss/) */
     },
     test: {
       extension: componentFileExtension,
-      suffixExtension: testingFileExtension
+      suffixExtension: testingFileExtension,
+      // path:              /* Specify a custom file folder path here (e.g ./test/<%component_name%>/) */
     },
     props: {
       extension: deductedExtension,
-      suffixExtension: `.props${deductedExtension}`
+      suffixExtension: `.props${deductedExtension}`,
+      // path:              /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     },
     fixture: {
       extension: deductedExtension,
-      suffixExtension: `.fixture${deductedExtension}`
+      suffixExtension: `.fixture${deductedExtension}`,
+      // path:              /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     }
   }
 }
@@ -90,7 +97,7 @@ const defaultProjectName = path.basename(CURRENT_WORKING_DIRECTORY);
 async function buildConfig(promptResponse: IPromptResponse) {
   const { componentFileExtension, componentSuffixFileExtension, styleSheetFileSuffixExtension, testingFileExtension } = promptResponse;
   const BaseComponentName = 'Button';
-  const deductedFileExtension = componentFileExtension === 'tsx' || componentFileExtension === 'ts' ? '.ts' : '.js';
+  const deductedFileExtension = componentFileExtension === '.tsx' || componentFileExtension === '.ts' ? '.ts' : '.js';
   const overwriteResponse = await inquirer.prompt([
     {
       type: 'confirm',
@@ -159,7 +166,7 @@ async function triggerPromptOption() {
         type: 'list',
         name: 'componentSuffixFileExtension',
         message({ componentFileExtension }) {
-          return `Would you like to add a suffix to your component ? (example: ${log(chalk.blue(`Button.component${componentFileExtension}`))})`
+          return `Would you like to add a suffix to your component ? (example: ${`Button.component${componentFileExtension}`})`
         },
         choices({ componentFileExtension }) {
           return [`.component${componentFileExtension}`, 'none']
