@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { doesConfigFileExists, isReactOrNextInstalled } from '../utils';
+import { doesConfigFileExists, isReactOrNextInstalled } from '../../utils';
 import { checkConfigFilePrompt, triggerPromptOption } from './prompt';
 
 const log = console.log;

@@ -79,8 +79,6 @@ function doesConfigFileExists() {
   return fs.readdirSync('.').includes('rfsb.config.json');
 };
 
-
-
 /**
  * Check if given lib/libraries exists in package.json
  * Also handle the case where 2 different libraries are installed e.g react and next.js

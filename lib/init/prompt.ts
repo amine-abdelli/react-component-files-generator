@@ -1,8 +1,8 @@
 import inquirer from 'inquirer';
 import path from 'path';
-import { findDependenciesFromJsonPackage, writeJsonConfigFile } from '../utils';
-import { formatResponseObjectToConfigFile } from '../utils/config.utils';
-import { IPromptResponse } from './types';
+import { findDependenciesFromJsonPackage, writeJsonConfigFile } from '../../utils';
+import { formatResponseObjectToConfigFile } from '../../utils/config.utils';
+import { IPromptResponse } from '../types';
 
 // Check if a config file already exists and ask for confirmation before erase it
 async function checkConfigFilePrompt() {

@@ -1,13 +1,16 @@
 import fs from 'fs';
-import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, StyleImportTemplate } from '../constants';
-import { sanitizeConfigPaths, sanitizePath, createDirIfNotExist, buildFile, readTemplateFile } from '../utils';
+import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, StyleImportTemplate } from '../../constants';
+import { sanitizeConfigPaths, sanitizePath, createDirIfNotExist, buildFile, readTemplateFile } from '../../utils';
+import { checkConfigFilePrompt } from './prompt';
 
 // Get configs from rfsb.config.json file
 const { name, componentEntryPoint, ...configRest } = JSON.parse(fs.readFileSync('rfsb.config.json', { encoding: 'utf8' }));
-
 // Clean path
 const COMPONENTS_ROOT_DIR = sanitizePath(componentEntryPoint);
 const ComponentName = 'Button';
+//! ADD SOMEWHERE IN AN OBJECT ALL THE FILE NAME LIKE (Button.module.scss, Button.component.js etc ...)
+// ! Prompt here what user wants  
+checkConfigFilePrompt();
 
 // For each key create a file dynamically filled with template file's content
 for (const [key, aConfig] of Object.entries(sanitizeConfigPaths(configRest, ComponentName))) {
