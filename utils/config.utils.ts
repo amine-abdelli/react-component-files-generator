@@ -1,5 +1,6 @@
 import { IPromptResponse } from "../lib/types"
 
+// Build the config file object that will be then turned into a json file
 function formatResponseObjectToConfigFile({
   componentFileExtension, projectName,
   componentSuffixFileExtension, styleSheetFileExtension, styleSheetFileSuffixExtension, testingFileExtension, componentEntryPoint
