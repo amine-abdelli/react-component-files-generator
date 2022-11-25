@@ -99,7 +99,19 @@ function findDependenciesFromJsonPackage(lib: string | string[]) {
   }
 }
 
+/**
+ * Check if a file exists in the give directory
+ * @param componentName 
+ * @param componentDir 
+ * @returns true if the file exists in the given directory
+ */
+function doesFileExists(componentName: string, componentDir: string) {
+  if(!fs.existsSync(componentDir)) return false;
+  const dir = fs.readdirSync(componentDir);
+  return dir.includes(componentName)
+}
+
 export {
   createDirIfNotExist, buildFile, readTemplateFile, getProjectDependencies, writeJsonConfigFile, doesConfigFileExists, isReactOrNextInstalled,
-  findDependenciesFromJsonPackage
+  findDependenciesFromJsonPackage, doesFileExists
 };
