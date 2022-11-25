@@ -1,5 +1,5 @@
 import React from 'react';
-<%style_import%>;
+<%style_import%>
 
 const <%component_name%> = () => {
   return (
