@@ -1,15 +1,22 @@
 import inquirer from 'inquirer';
-import { doesFileExists } from '../../utils';
+import { doesFileExists, log } from '../utils';
 import { IConfigObject } from '../types';
 
 async function componentBuildPrompt(configRest: IConfigObject) {
-  // TODO: MAKE SURE USER CAN'T INTRODUCE SPACES
   const classifiedResponse: any[] = [];
   const { fileCheckboxes, chosenComponentName } = await inquirer.prompt([
     {
       type: 'input',
       name: 'chosenComponentName',
       message: 'Choose a component name:',
+      validate(input, answers?) {
+        if(!new RegExp(/^[A-Z]+$/i).test(input)) {
+          log('')
+          log('Component name can only includes alphabetic characters, please try again !', 'error');
+          return false;
+        }
+        return true
+      },
     },
     {
       type: 'confirm',

@@ -1,29 +1,21 @@
 import fs from 'fs';
-import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, StyleImportTemplate } from '../../constants';
-import { sanitizeConfigPaths, sanitizePath, createDirIfNotExist, buildFile, readTemplateFile } from '../../utils';
-import { IConfigObject } from '../types';
+import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, StyleImportTemplate } from '../constants';
+import { sanitizeConfigPaths, sanitizePath, createDirIfNotExist, buildFile, readTemplateFile, doesConfigFileExists, log, getFullFileNames } from '../utils';
+import { quitPrompt } from '../utils/prompt.utils';
 import { componentBuildPrompt } from './prompt.build';
-
-function getFullFileName(name: string, extension: string) {
-  return `${name}${extension}`;
-}
-
-function getFullFileNames(configFile: IConfigObject, componentName: string) {
-  const FILE_NAMES: Record<string, string> = {};
-  for(const [key, value] of Object.entries(configFile)) {
-    FILE_NAMES[key] = getFullFileName(componentName, value.suffixExtension) 
-  }
-  return FILE_NAMES;
-}
 
 (async () => {
   // Get configs from rfsb.config.json file
+  if(!doesConfigFileExists()){
+    log('We couldn\'t find any config file in your current working directory.', 'warning');
+    log('     Please first run the following command : rfsb --init');
+    quitPrompt();
+  }
   const { name, componentEntryPoint, ...configRest } = JSON.parse(fs.readFileSync('rfsb.config.json', { encoding: 'utf8' }));
   // Clean component entry point path
   const COMPONENTS_ROOT_DIR = sanitizePath(componentEntryPoint);
 
   const { chosenComponentName: ComponentName, promptResponse } = await componentBuildPrompt(configRest);
-  
   const responsesType = promptResponse.map(({ type }) => type);
   const FILE_NAMES = getFullFileNames(configRest, ComponentName);
   
@@ -82,8 +74,7 @@ function getFullFileNames(configFile: IConfigObject, componentName: string) {
     }
 
     buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, '');
-
   }
-})()
+})();
 
 // "fill": false     /* if user doesn't want his file filled up
