@@ -16,6 +16,8 @@ import { componentBuildPrompt } from './prompt.build';
   const COMPONENTS_ROOT_DIR = sanitizePath(componentEntryPoint);
 
   const { chosenComponentName: ComponentName, promptResponse } = await componentBuildPrompt(configRest);
+  // TODO: HERE FIND RELATED FILES AND DELETE THEM
+
   const responsesType = promptResponse.map(({ type }) => type);
   const FILE_NAMES = getFullFileNames(configRest, ComponentName);
   
