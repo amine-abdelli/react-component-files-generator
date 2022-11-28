@@ -1,4 +1,4 @@
-import { IPromptResponse } from "../lib/types"
+import { IConfigObject, IPromptResponse } from "../types"
 
 // Build the config file object that will be then turned into a json file
 function formatResponseObjectToConfigFile({
@@ -39,4 +39,28 @@ function formatResponseObjectToConfigFile({
   }
 }
 
-export { formatResponseObjectToConfigFile };
+/**
+ * Get the full file name based on what's passed via parameters
+ * @param name component name
+ * @param extension file extension
+ * @returns a full file name (e.g Button.component.tsx)
+ */
+function getFullFileName(name: string, extension: string) {
+  return `${name}${extension}`;
+}
+
+/**
+ * Build an object with full file names based on config file (e.g. { ...FILE_NAMES, test: Button.test.tsx })
+ * @param configFile 
+ * @param componentName 
+ * @returns an object filled with full file names
+ */
+function getFullFileNames(configFile: IConfigObject, componentName: string) {
+  const FILE_NAMES: Record<string, string> = {};
+  for(const [key, value] of Object.entries(configFile)) {
+    FILE_NAMES[key] = getFullFileName(componentName, value.suffixExtension) 
+  }
+  return FILE_NAMES;
+}
+
+export { formatResponseObjectToConfigFile, getFullFileNames, getFullFileName };

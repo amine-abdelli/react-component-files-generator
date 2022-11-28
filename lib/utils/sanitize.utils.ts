@@ -1,6 +1,6 @@
 import { ComponentNameTemplate, PathPolicyRegex } from '../constants';
 
-import { IConfigObject } from '../lib/types';
+import { IConfigObject } from '../types';
 
 /**
  * Remove ./ or / at the begining of the path and / at the end of the path
