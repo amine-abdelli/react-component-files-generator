@@ -14,8 +14,9 @@
     "react structure"
   ],
   "scripts": {
-    "init": "ts-node-dev -r --no-notify --respawn --exit-child -r tsconfig-paths/register --transpile-only lib/init/init",
-    "build": "ts-node-dev -r --no-notify --respawn --exit-child -r tsconfig-paths/register --transpile-only lib/build/build"
+    "init": "ts-node-dev --transpile-only lib/init/init",
+    "build": "ts-node-dev --transpile-only lib/builder/build",
+    "help": "ts-node-dev --transpile-only lib/help/help"
   },
   "license": "MIT",
   "devDependencies": {
