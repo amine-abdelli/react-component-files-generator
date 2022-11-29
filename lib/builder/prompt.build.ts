@@ -37,13 +37,13 @@ async function componentBuildPrompt(configRest: IConfigObject) {
       message: 'What file would you like to set up for now ?',
       choices({ chosenComponentName }) {
         return Object.entries(configRest).map(([key, value]) => {
-          classifiedResponse.push({ name: `${chosenComponentName}${value.suffixExtension}`, type: key})
-          return `${chosenComponentName}${value.suffixExtension}`;
+          classifiedResponse.push({ name: `${chosenComponentName}${value.nameExtension}`, type: key})
+          return `${chosenComponentName}${value.nameExtension}`;
         })
       },
       default({ chosenComponentName }: { chosenComponentName: string}) {
-        return Object.values(configRest).slice(0, 3).map(({ suffixExtension }: any) => {
-          return `${chosenComponentName}${suffixExtension}`
+        return Object.values(configRest).slice(0, 3).map(({ nameExtension }: any) => {
+          return `${chosenComponentName}${nameExtension}`
         })
       },
       when({ shouldContinue, chosenComponentName }) {

@@ -11,29 +11,29 @@ function formatResponseObjectToConfigFile({
     componentEntryPoint: componentEntryPoint,
     component: {
       extension: componentFileExtension,
-      suffixExtension: componentSuffixFileExtension,
+      nameExtension: componentSuffixFileExtension,
       export: 'module',
       // "path":            /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     },
     style: {
       extension: styleSheetFileExtension,
-      suffixExtension: styleSheetFileSuffixExtension,
+      nameExtension: styleSheetFileSuffixExtension,
       import: 'default',
       // "path":            /* Specify a custom file folder path here (e.g ./theme/scss/) */
     },
     test: {
       extension: componentFileExtension,
-      suffixExtension: testingFileExtension,
+      nameExtension: testingFileExtension,
       // path:              /* Specify a custom file folder path here (e.g ./test/<%component_name%>/) */
     },
     props: {
       extension: deductedExtension,
-      suffixExtension: `.props${deductedExtension}`,
+      nameExtension: `.props${deductedExtension}`,
       // path:              /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     },
     fixture: {
       extension: deductedExtension,
-      suffixExtension: `.fixture${deductedExtension}`,
+      nameExtension: `.fixture${deductedExtension}`,
       // path:              /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     }
   }
@@ -58,7 +58,7 @@ function getFullFileName(name: string, extension: string) {
 function getFullFileNames(configFile: IConfigObject, componentName: string) {
   const FILE_NAMES: Record<string, string> = {};
   for(const [key, value] of Object.entries(configFile)) {
-    FILE_NAMES[key] = getFullFileName(componentName, value.suffixExtension) 
+    FILE_NAMES[key] = getFullFileName(componentName, value.nameExtension) 
   }
   return FILE_NAMES;
 }
