@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, StyleImportTemplate } from '../constants';
+import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, PropsImportTemplate, StyleImportTemplate } from '../constants';
 import { sanitizeConfigPaths, sanitizePath, createDirIfNotExist, buildFile, readTemplateFile, doesConfigFileExists, log, getFullFileNames } from '../utils';
 import { quitPrompt } from '../utils/prompt.utils';
 import { componentBuildPrompt } from './prompt.build';
@@ -21,10 +21,11 @@ import { componentBuildPrompt } from './prompt.build';
   const responsesType = promptResponse.map(({ type }) => type);
   const FILE_NAMES = getFullFileNames(configRest, ComponentName);
   
+  const RELATIVE_PATH = `${COMPONENTS_ROOT_DIR}/${ComponentName}/`;
+
   // For each key create a file dynamically filled with template file's content
   for (const [key, aConfig] of Object.entries(sanitizeConfigPaths(configRest, ComponentName))) {
     const FILE_NAME = FILE_NAMES[key];
-    const RELATIVE_PATH = aConfig.path || `${COMPONENTS_ROOT_DIR}/${ComponentName}/`;
     createDirIfNotExist(RELATIVE_PATH);
 
     // Go to the next config if this one hasn't been picked by the user
@@ -33,25 +34,35 @@ import { componentBuildPrompt } from './prompt.build';
     }
 
     if (key === 'component') {
-      // TODO : Import default props into component and set it up
       // TODO : When we have no style import go one line upward'\b'
+      // TODO : Add first class to style sheet and set it up to the component
+      // TODO :  "fill": false     /* if user doesn't want his file filled up
       const componentExportString = aConfig.export === 'module' ? `{ ${ComponentName} }` : `default ${ComponentName}`;
-      const STYLESHEET_DIRECTORY = configRest.style.path ? `${configRest.style.path}/` : '';
-      const STYLESHEET_IMPORT_PATH = `./${STYLESHEET_DIRECTORY}${FILE_NAME};`
-      const styleImportString = configRest.style.import === 'module' ? `import styles from '${STYLESHEET_IMPORT_PATH}';` : `import '${STYLESHEET_IMPORT_PATH}';`;
+      const STYLESHEET_IMPORT_PATH = `./${ComponentName}${configRest.style.nameExtension}`
+      const PROPS_IMPORT_PATH = `./${ComponentName}${configRest.props.nameExtension}`
+      const propsName = `${ComponentName}Props`;
+      const styleImportString = configRest.style.import === 'module' 
+              ? `import styles from '${STYLESHEET_IMPORT_PATH}';` 
+              : `import '${STYLESHEET_IMPORT_PATH}';`;
+
+      const hasProps = responsesType.includes('props');
+      const hasStyle = responsesType.includes('style');
+      const propsImportString = hasProps ? `import { ${ComponentName}Props } from \'${PROPS_IMPORT_PATH}';` : '';
+      const props = hasProps ? `: ${propsName}` : '';
 
       // Dynamically replace template's tags with the right content
       const formatedTemplate = JSON.stringify(readTemplateFile(key))
         .replaceAll(ComponentNameTemplate, ComponentName)
         .replaceAll(ComponentExportTemplate, componentExportString)
-        .replaceAll(StyleImportTemplate, responsesType.includes('style') ? styleImportString : '');
+        .replaceAll(StyleImportTemplate, hasStyle ? styleImportString : '')
+        .replaceAll(PropsImportTemplate, propsImportString)
+        .replaceAll('<%props%>', props);
 
       // Build component file
       buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, JSON.parse(formatedTemplate));
     }
     if (key === 'test') {
-      const COMPONENT_DIR = configRest.component.path ? `${configRest.component.path}/` : '';
-      const COMPONENT_IMPORT_PATH = `./${COMPONENT_DIR}${FILE_NAME}`;
+      const COMPONENT_IMPORT_PATH = `./${ComponentName}${configRest.component.nameExtension}`;
       const FULL_COMPONENT_FILE_IMPORT_STRING = `import ${configRest.component.export === 'default' ? ComponentName : `{ ${ComponentName} }`} from '${COMPONENT_IMPORT_PATH}'`
 
       // Dynamically replace template's tags with the right content
@@ -78,5 +89,3 @@ import { componentBuildPrompt } from './prompt.build';
     buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, '');
   }
 })();
-
-// "fill": false     /* if user doesn't want his file filled up
