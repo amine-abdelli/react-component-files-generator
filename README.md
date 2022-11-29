@@ -35,17 +35,29 @@ When you run init rfsb within your project the first time, it will ask you a ser
 
 ```json
 {
-  "usesTypeScript": false,
-  "usesCssModule": true,
-  "cssPreprocessor": "scss",
-  "testLibrary": "Testing Library",
-  "component": {
-    "default": {
-      "path": "src/components",
-      "withLazy": false,
-      "withStory": false,
-      "withStyle": true,
-      "withTest": true
+    "name": "my project",
+    "componentEntryPoint": "./src/components",
+    "component": {
+        "extension": ".tsx",
+        "nameExtension": ".component.tsx",
+        "export": "module"
+    },
+    "style": {
+        "extension": ".less",
+        "nameExtension": ".module.less",
+        "module": true
+    },
+    "test": {
+        "extension": ".tsx",
+        "nameExtension": ".test.tsx"
+    },
+    "props": {
+        "extension": ".ts",
+        "nameExtension": ".props.ts"
+    },
+    "fixture": {
+        "extension": ".ts",
+        "nameExtension": ".fixture.ts"
     }
-  }
 }
+```
