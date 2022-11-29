@@ -4,7 +4,7 @@ import { filewalker } from '../utils/path.utils';
 import { quitPrompt } from '../utils/prompt.utils';
 import { checkConfigFilePrompt, triggerPromptOption } from './prompt.init';
 
-(async () => {
+export async function runInit() {
   const foo = filewalker(process.cwd())
   console.log('foo', foo);
   if (isReactOrNextInstalled()) {
@@ -22,4 +22,4 @@ import { checkConfigFilePrompt, triggerPromptOption } from './prompt.init';
   } else {
     triggerPromptOption();
   }
-})();
+};

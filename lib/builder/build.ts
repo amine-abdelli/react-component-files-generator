@@ -4,7 +4,7 @@ import { sanitizeConfigPaths, sanitizePath, createDirIfNotExist, buildFile, read
 import { quitPrompt } from '../utils/prompt.utils';
 import { componentBuildPrompt } from './prompt.build';
 
-(async () => {
+export async function runBuild() {
   // Get configs from rfsb.config.json file
   if(!doesConfigFileExists()){
     log('We couldn\'t find any config file in your current working directory.', 'warning');
@@ -88,4 +88,4 @@ import { componentBuildPrompt } from './prompt.build';
 
     buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, '');
   }
-})();
+};
