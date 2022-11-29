@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, PropsImportTemplate, StyleImportTemplate } from '../constants';
+import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, PropsImportTemplate, PropsTemplate, StyleImportTemplate } from '../constants';
 import { sanitizeConfigPaths, sanitizePath, createDirIfNotExist, buildFile, readTemplateFile, doesConfigFileExists, log, getFullFileNames } from '../utils';
 import { quitPrompt } from '../utils/prompt.utils';
 import { componentBuildPrompt } from './prompt.build';
@@ -36,12 +36,12 @@ import { componentBuildPrompt } from './prompt.build';
     if (key === 'component') {
       // TODO : When we have no style import go one line upward'\b'
       // TODO : Add first class to style sheet and set it up to the component
-      // TODO :  "fill": false     /* if user doesn't want his file filled up
+      // TODO : "fill": false     /* if user doesn't want his file filled up
       const componentExportString = aConfig.export === 'module' ? `{ ${ComponentName} }` : `default ${ComponentName}`;
       const STYLESHEET_IMPORT_PATH = `./${ComponentName}${configRest.style.nameExtension}`
       const PROPS_IMPORT_PATH = `./${ComponentName}${configRest.props.nameExtension}`
       const propsName = `${ComponentName}Props`;
-      const styleImportString = configRest.style.import === 'module' 
+      const styleImportString = configRest.style.module 
               ? `import styles from '${STYLESHEET_IMPORT_PATH}';` 
               : `import '${STYLESHEET_IMPORT_PATH}';`;
 
@@ -56,7 +56,7 @@ import { componentBuildPrompt } from './prompt.build';
         .replaceAll(ComponentExportTemplate, componentExportString)
         .replaceAll(StyleImportTemplate, hasStyle ? styleImportString : '')
         .replaceAll(PropsImportTemplate, propsImportString)
-        .replaceAll('<%props%>', props);
+        .replaceAll(PropsTemplate, props);
 
       // Build component file
       buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, JSON.parse(formatedTemplate));

@@ -1,6 +1,6 @@
 {
   "name": "react-folder-structure-builder",
-  "description": "A CLI to help generate react folder structure for your project",
+  "description": "A CLI that helps developers generating react folder structure for your project",
   "version": "1.0.0",
   "main": "lib/index.ts",
   "author": "Amine Abdelli <amine.abdelli@outlook.fr>",
