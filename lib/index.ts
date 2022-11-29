@@ -1,13 +1,14 @@
 #!/usr/bin/env node
-// Check node version before requiring/doing anything else
-// The user may be on a very old node version
+// TODO: Check node version before requiring/doing anything else
+// !: The user may be on a very old node version
 
 import { runBuild } from "./builder/build";
 import { runHelp } from "./help";
 import { runInit } from "./init/init";
 import { log } from "./utils";
+
 const knownCommands = ['build', 'init', 'update', 'version', 'help'];
-console.log('process.argv', process.argv);
+
 if(process.argv[2] === 'build') {
   runBuild();
 }

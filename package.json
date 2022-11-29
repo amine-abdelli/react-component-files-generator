@@ -1,7 +1,7 @@
 {
-  "name": "react-folder-structure-builder",
+  "name": "rfsb",
   "description": "A CLI that helps developers generating react folder structure for your project",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/index.ts",
   "author": "Amine Abdelli <amine.abdelli@outlook.fr>",
   "keywords": [
@@ -14,11 +14,12 @@
     "react structure"
   ],
   "scripts": {
-    "init": "ts-node-dev --transpile-only lib/init/init",
-    "build": "ts-node-dev --transpile-only lib/builder/build",
-    "help": "ts-node-dev --transpile-only lib/help/help"
+    "build": "rm -rf ./dist/ && tsc -p tsconfig.json"
   },
   "license": "MIT",
+  "bin": {
+    "rfsb": "./dist/lib/index.js"
+  },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
     "@types/node": "^18.11.9",
