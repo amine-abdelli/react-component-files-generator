@@ -5,9 +5,7 @@ import { quitPrompt } from '../utils/prompt.utils';
 import { checkConfigFilePrompt, triggerPromptOption } from './prompt.init';
 
 export async function runInit() {
-  const foo = filewalker(process.cwd())
-  console.log('foo', foo);
-  if (isReactOrNextInstalled()) {
+  if (!isReactOrNextInstalled()) {
     log('No React or Next.js project could be found, please install one of theme before going further');
   }
   if (doesConfigFileExists()) {
@@ -15,7 +13,7 @@ export async function runInit() {
     if (overwriteResponse.overwrite) {
       triggerPromptOption();
     } else {
-      // TODO: Add some cool emojis everywhere ;)
+      // TODO: Add some cool emojis :D
       log('Goodbye !');
       quitPrompt();
     }
