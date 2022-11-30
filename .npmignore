@@ -2,3 +2,6 @@
 *.ts
 !*.d.ts
 src
+lib
+rfsb.config.json
+node_modules
