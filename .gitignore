@@ -2,3 +2,5 @@
 rfsb.config.json
 src
 dist
+yarn.lock
+.yarn-integrity
