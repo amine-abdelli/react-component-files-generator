@@ -3,19 +3,19 @@ export interface IConfigObject {
     componentEntryPoint: string,
     component: {
       extension: string,
-      nameExtension: string,
+      nameExtension: boolean | string,
       export?: string,
       path?: string
     },
     style: {
       extension: string,
-      nameExtension: string,
+      nameExtension: boolean | string,
       import?: string,
       path?: string
     },
     test: {
       extension: string,
-      nameExtension: string,
+      nameExtension: boolean | string,
       path?: string
     },
     props: {

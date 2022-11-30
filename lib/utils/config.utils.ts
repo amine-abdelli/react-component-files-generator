@@ -11,19 +11,19 @@ function formatResponseObjectToConfigFile({
     componentEntryPoint: componentEntryPoint,
     component: {
       extension: componentFileExtension,
-      nameExtension: componentSuffixFileExtension,
+      nameExtension: componentSuffixFileExtension === 'none' ? false : componentSuffixFileExtension,
       export: 'module',
       // "path":            /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     },
     style: {
       extension: styleSheetFileExtension,
-      nameExtension: styleSheetFileSuffixExtension,
-      import: 'default',
+      nameExtension: styleSheetFileSuffixExtension === 'none' ? false : styleSheetFileSuffixExtension,
+      module: false,
       // "path":            /* Specify a custom file folder path here (e.g ./theme/scss/) */
     },
     test: {
       extension: componentFileExtension,
-      nameExtension: testingFileExtension,
+      nameExtension: testingFileExtension === 'none' ? false : testingFileExtension,
       // path:              /* Specify a custom file folder path here (e.g ./test/<%component_name%>/) */
     },
     props: {
@@ -58,7 +58,7 @@ function getFullFileName(name: string, extension: string) {
 function getFullFileNames(configFile: IConfigObject, componentName: string) {
   const FILE_NAMES: Record<string, string> = {};
   for(const [key, value] of Object.entries(configFile)) {
-    FILE_NAMES[key] = getFullFileName(componentName, value.nameExtension) 
+    FILE_NAMES[key] = getFullFileName(componentName, value.nameExtension || value.extension)
   }
   return FILE_NAMES;
 }

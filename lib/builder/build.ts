@@ -16,7 +16,6 @@ export async function runBuild() {
   const COMPONENTS_ROOT_DIR = sanitizePath(componentEntryPoint);
 
   const { chosenComponentName: ComponentName, promptResponse } = await componentBuildPrompt(configRest);
-  // TODO: HERE FIND RELATED FILES AND DELETE THEM
 
   const responsesType = promptResponse.map(({ type }) => type);
   const FILE_NAMES = getFullFileNames(configRest, ComponentName);
@@ -29,17 +28,16 @@ export async function runBuild() {
     createDirIfNotExist(RELATIVE_PATH);
 
     // Go to the next config if this one hasn't been picked by the user
-    if (!responsesType.includes(key)) {
-      continue
-    }
+    if (!responsesType.includes(key)) continue;
 
     if (key === 'component') {
       // TODO : When we have no style import go one line upward'\b'
       // TODO : Add first class to style sheet and set it up to the component
       // TODO : "fill": false     /* if user doesn't want his file filled up
+      // TODO : Trigger errors when necessary like if there is 2 files that could have the same name in the same folder in case of nameExtension missing 
       const componentExportString = aConfig.export === 'module' ? `{ ${ComponentName} }` : `default ${ComponentName}`;
-      const STYLESHEET_IMPORT_PATH = `./${ComponentName}${configRest.style.nameExtension}`
-      const PROPS_IMPORT_PATH = `./${ComponentName}${configRest.props.nameExtension}`
+      const STYLESHEET_IMPORT_PATH = `./${FILE_NAMES['style']}`;
+      const PROPS_IMPORT_PATH = `./${FILE_NAMES['props']}`;
       const propsName = `${ComponentName}Props`;
       const styleImportString = configRest.style.module 
               ? `import styles from '${STYLESHEET_IMPORT_PATH}';` 
@@ -62,7 +60,7 @@ export async function runBuild() {
       buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, JSON.parse(formatedTemplate));
     }
     if (key === 'test') {
-      const COMPONENT_IMPORT_PATH = `./${ComponentName}${configRest.component.nameExtension}`;
+      const COMPONENT_IMPORT_PATH = `./${FILE_NAMES['component']}`;
       const FULL_COMPONENT_FILE_IMPORT_STRING = `import ${configRest.component.export === 'default' ? ComponentName : `{ ${ComponentName} }`} from '${COMPONENT_IMPORT_PATH}'`
 
       // Dynamically replace template's tags with the right content

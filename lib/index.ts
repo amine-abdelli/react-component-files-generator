@@ -7,7 +7,7 @@ import { runHelp } from "./help";
 import { runInit } from "./init/init";
 import { log } from "./utils";
 
-const knownCommands = ['build', 'init', 'update', 'version', 'help'];
+const knownOptions = ['build', 'init', 'update', 'version', 'help'];
 
 if(process.argv[2] === 'build') {
   runBuild();
@@ -21,7 +21,7 @@ if(process.argv[2] === 'version') {
 if(process.argv[2] === 'help') {
   runHelp();
 }
-if(!knownCommands.includes(process.argv[2])) {
+if(!knownOptions.includes(process.argv[2])) {
   log('Oops! Something went wrong! :(');
   log(`The option '${process.argv[2]}' is not valid. Consider having a look at the help section :`);
   runHelp()
