@@ -58,7 +58,7 @@ function buildFile(path: string, content: string) {
  * @returns a template file
  */
 function readTemplateFile(key: string): string {
-  return fs.readFileSync(`./lib/templates/${key}.template.ts`, { encoding: 'utf8' });
+  return fs.readFileSync(`./lib/templates/${key}.template`, { encoding: 'utf8' });
 }
 
 /**
