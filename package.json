@@ -1,7 +1,7 @@
 {
   "name": "rfsb",
   "description": "A CLI that helps developers generating react folder structure for your project",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "main": "lib/index.ts",
   "author": "Amine Abdelli <amine.abdelli@outlook.fr>",
   "keywords": [
@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "bin": {
-    "rfsb": "./dist/lib/index.js"
+    "rfsb": "./dist/index.js"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
@@ -29,6 +29,7 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "rfsb": "^1.0.3",
     "ts-node-dev": "^2.0.0"
   }
 }
