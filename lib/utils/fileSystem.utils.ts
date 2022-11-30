@@ -1,5 +1,4 @@
 import fs from 'fs';
-import chalk from 'chalk';
 import { IConfigObject } from '../types';
 import { log } from './log.utils';
 
