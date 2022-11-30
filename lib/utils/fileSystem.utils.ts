@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { IConfigObject } from '../types';
 import { log } from './log.utils';
 
@@ -21,7 +22,8 @@ function writeJsonConfigFile(promptResponse: IConfigObject) {
  * @returns an array of dependencies e.g ['react', 'typescript', ...]
  */
 function getProjectDependencies() {
-  const JsonPackage = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+  const jsonPackagePath = path.join(process.cwd() + '/package.json');
+  const JsonPackage = JSON.parse(fs.readFileSync(jsonPackagePath, { encoding: 'utf8' }));
   return Object.keys({
     ...JsonPackage.dependencies,
     ...JsonPackage.devDependencies
@@ -57,7 +59,7 @@ function buildFile(path: string, content: string) {
  * @returns a template file
  */
 function readTemplateFile(key: string): string {
-  return fs.readFileSync(`./lib/templates/${key}.template`, { encoding: 'utf8' });
+  return fs.readFileSync(path.join(__dirname + `/../templates/${key}.template`), { encoding: 'utf8' });
 }
 
 /**
@@ -66,7 +68,7 @@ function readTemplateFile(key: string): string {
  */
 function isReactOrNextInstalled() {
   const dependencies = getProjectDependencies();
-  return !!dependencies.filter((aDependency) => aDependency === 'next' || aDependency === 'react').length;
+  return dependencies.some((aDependency) => aDependency === 'next' || aDependency === 'react');
 }
 
 /**
