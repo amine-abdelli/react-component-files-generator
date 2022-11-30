@@ -5,7 +5,7 @@ react-folder-structure-builder is a simple library helping you creating react co
 ## Getting started
 ### Install rfsb using npm :
 ```
-  npm install --save-dev rfsb
+  npm install rfsb
 ```
 ### Init rfsb to an existing react project running the following command:
 ```
