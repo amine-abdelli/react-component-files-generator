@@ -53,7 +53,7 @@ async function triggerPromptOption() {
       },
       {
         type: 'list',
-        name: 'componentSuffixFileExtension',
+        name: 'componentFileNameExtension',
         message({ componentFileExtension }) {
           return `Would you like to add a suffix to your component ? (example: ${`Button.component${componentFileExtension}`})`
         },
@@ -91,13 +91,12 @@ async function triggerPromptOption() {
         default: 'Button.test.scss',
       },
     ]);
-
   buildConfig(promptResponse)
 }
 
 // Build config file based on user's prompt response
 async function buildConfig(promptResponse: IPromptResponse) {
-  const { componentFileExtension, componentSuffixFileExtension, styleSheetFileSuffixExtension, testingFileExtension } = promptResponse;
+  const { componentFileExtension, componentFileNameExtension, styleSheetFileSuffixExtension, testingFileExtension, styleSheetFileExtension } = promptResponse;
   const BaseComponentName = 'Button';
   const deductedFileExtension = componentFileExtension === '.tsx' || componentFileExtension === '.ts' ? '.ts' : '.js';
   const overwriteResponse = await inquirer.prompt([
@@ -107,11 +106,11 @@ async function buildConfig(promptResponse: IPromptResponse) {
       message() {
         return `Here is what your component folder will look like, but you will always have the option to select only those that you need ! Does that suit you ?
     ./src/component/
-          - ${BaseComponentName}${componentSuffixFileExtension}
-          - ${BaseComponentName}.props${deductedFileExtension}
-          - ${BaseComponentName}${styleSheetFileSuffixExtension}
-          - ${BaseComponentName}${testingFileExtension}
-          - ${BaseComponentName}.fixture${deductedFileExtension}
+          - ${BaseComponentName}${componentFileNameExtension === 'none' ? componentFileExtension : componentFileNameExtension}          (Component)
+          - ${BaseComponentName}.props${deductedFileExtension}          (Props)
+          - ${BaseComponentName}${styleSheetFileSuffixExtension === 'none' ? styleSheetFileExtension : styleSheetFileSuffixExtension}          (Style)
+          - ${BaseComponentName}${testingFileExtension === 'none' ? componentFileExtension : testingFileExtension}          (Test)
+          - ${BaseComponentName}.fixture${deductedFileExtension}          (Fixture)
         `;
       },
       default: true

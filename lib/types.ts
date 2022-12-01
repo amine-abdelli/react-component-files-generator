@@ -35,7 +35,7 @@ export interface IPromptResponse {
   projectType: string,
   componentEntryPoint: string,
   componentFileExtension: string,
-  componentSuffixFileExtension: string,
+  componentFileNameExtension: string,
   styleSheetFileExtension: string,
   styleSheetFileSuffixExtension: string,
   testingFileExtension: string,

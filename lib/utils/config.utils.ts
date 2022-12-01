@@ -3,7 +3,7 @@ import { IConfigObject, IPromptResponse } from "../types"
 // Build the config file object that will be then turned into a json file
 function formatResponseObjectToConfigFile({
   componentFileExtension, projectName,
-  componentSuffixFileExtension, styleSheetFileExtension, styleSheetFileSuffixExtension, testingFileExtension, componentEntryPoint
+  componentFileNameExtension, styleSheetFileExtension, styleSheetFileSuffixExtension, testingFileExtension, componentEntryPoint
 }: IPromptResponse) {
   const deductedExtension: '.ts' | '.js' = (componentFileExtension === '.tsx' || componentFileExtension === '.ts') ? '.ts' : '.js'
   return {
@@ -11,7 +11,7 @@ function formatResponseObjectToConfigFile({
     componentEntryPoint: componentEntryPoint,
     component: {
       extension: componentFileExtension,
-      nameExtension: componentSuffixFileExtension === 'none' ? false : componentSuffixFileExtension,
+      nameExtension: componentFileNameExtension === 'none' ? false : componentFileNameExtension,
       export: 'module',
       // "path":            /* Specify a custom file folder path here (e.g ./src/components/<%component_name%>/) */
     },
