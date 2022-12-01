@@ -1,7 +1,7 @@
 {
   "name": "rfsb",
   "description": "A CLI that helps developers generating react folder structure for your project",
-  "version": "1.0.9",
+  "version": "1.0.0",
   "main": "lib/index.ts",
   "author": "Amine Abdelli <amine.abdelli@outlook.fr>",
   "keywords": [
@@ -11,11 +11,15 @@
     "react-cli",
     "builder",
     "structure",
-    "react structure"
+    "react structure",
+    "react architecture",
+    "architecture"
   ],
   "scripts": {
-    "build": "rm -rf ./dist/ && tsc -p tsconfig.json && cp lib/templates dist",
-    "link": "npm link && chmod a+x /home/aabdelli/.nvm/versions/node/v18.12.1/bin/rfsb"
+    "build": "rm -rf ./dist/ && tsc -p tsconfig.json && cp -r lib/templates dist && npm run link",
+    "link": "npm link && rm -rf chmod a+x /home/aabdelli/.nvm/versions/node/v18.12.1/bin/zboub",
+    "dev:init": "ts-node-dev lib/index.ts init",
+    "dev:build": "ts-node-dev lib/index.ts build"
   },
   "license": "MIT",
   "bin": {
