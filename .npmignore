@@ -5,3 +5,6 @@ src
 lib
 rfsb.config.json
 node_modules
+tsconfig.json
+package-lock.json
+.gitignore
