@@ -1,19 +1,18 @@
-# react-folder-structure-builder
-
-react-folder-structure-builder is a simple library helping you creating react components faster with a simple command.
-
+# react-component-builder
+## *react-component-builder* is a CLI tool helping developers creating react components faster with a simple command.
+ 
 ## Getting started
-### Install rfsb using npm :
+### Install rcb using npm :
+```typescript
+  npm install react-component-builder
 ```
-  npm install rfsb
+### Init rcb to an existing react project running the following command:
 ```
-### Init rfsb to an existing react project running the following command:
-```
-  rfsb init
+  npx rcb --init
 ```
 ### You can now generate components by running:
 ```
-  rfsb build
+  npx rcb --build
 ```
 
 #### By default components are generated in the same folder but you can change it by editing config file as well as everything else:
@@ -29,7 +28,7 @@ react-folder-structure-builder is a simple library helping you creating react co
 
 ## Config File
 
-When you run init rfsb within your project the first time, it will ask you a series of questions to customize the cli for your project needs (this will create a "rfsb.config.json" config file).
+When you run --init for the first time, it will ask you a series of questions to customize the cli to your needs and will generate a "rcb.config.json" config file.
 
 #### Example of the **rfsb.config.json** config file:
 
@@ -40,7 +39,7 @@ When you run init rfsb within your project the first time, it will ask you a ser
     "component": {
         "extension": ".tsx",
         "nameExtension": ".component.tsx",
-        "export": "module"
+        "export": "default"
     },
     "style": {
         "extension": ".less",
