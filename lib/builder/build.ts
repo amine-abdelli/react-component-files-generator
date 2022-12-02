@@ -15,7 +15,7 @@ export async function runBuild() {
   // Clean component entry point path
   const COMPONENTS_ROOT_DIR = sanitizePath(componentEntryPoint);
 
-  const { chosenComponentName: ComponentName, promptResponse } = await componentBuildPrompt(configRest);
+  const { chosenComponentName: ComponentName, promptResponse } = await componentBuildPrompt(configRest, componentEntryPoint);
 
   const responsesType = promptResponse.map(({ type }) => type);
   const FILE_NAMES = getFullFileNames(configRest, ComponentName);
@@ -31,10 +31,6 @@ export async function runBuild() {
     if (!responsesType.includes(key)) continue;
 
     if (key === 'component') {
-      // TODO : When we have no style import go one line upward'\b'
-      // TODO : "fill": false     /* if user doesn't want his file filled up
-      // TODO : Trigger errors when necessary like if there is 2 files that could have the same name in the same folder in case of nameExtension missing 
-      // TODO : Make it possible to change file name like Button.component.tsx ButtonProps.ts
       const componentExportString = aConfig.export === 'module' ? `{ ${ComponentName} }` : `default ${ComponentName}`;
       const STYLESHEET_IMPORT_PATH = `./${FILE_NAMES['style']}`;
       const PROPS_IMPORT_PATH = `./${FILE_NAMES['props']}`;

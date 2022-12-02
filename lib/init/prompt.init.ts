@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import path from 'path';
-import { findDependenciesFromJsonPackage, writeJsonConfigFile } from '../utils';
+import { findDependenciesFromJsonPackage, sanitizePath, writeJsonConfigFile } from '../utils';
 import { formatResponseObjectToConfigFile } from '../utils/config.utils';
 import { IPromptResponse } from '../types';
 
@@ -32,13 +32,6 @@ async function triggerPromptOption() {
         default: defaultProjectName,
       },
       {
-        type: 'list',
-        name: 'projectType',
-        message: 'Chose the correct framework ?',
-        choices: ['React', 'Next.js'],
-        default: findDependenciesFromJsonPackage(['react', 'next']) === 'react' ? 'React' : 'Next.js',
-      },
-      {
         type: 'text',
         name: 'componentEntryPoint',
         message: 'Which folder is the entry point of your components? (by default "./src/components")',
@@ -55,7 +48,7 @@ async function triggerPromptOption() {
         type: 'list',
         name: 'componentFileNameExtension',
         message({ componentFileExtension }) {
-          return `Would you like to add a suffix to your component ? (example: ${`Button.component${componentFileExtension}`})`
+          return `Would you like to add a name extension to your component ? (example: ${`Button.component${componentFileExtension}`})`
         },
         choices({ componentFileExtension }) {
           return [`.component${componentFileExtension}`, 'none']
@@ -96,7 +89,7 @@ async function triggerPromptOption() {
 
 // Build config file based on user's prompt response
 async function buildConfig(promptResponse: IPromptResponse) {
-  const { componentFileExtension, componentFileNameExtension, styleSheetFileSuffixExtension, testingFileExtension, styleSheetFileExtension } = promptResponse;
+  const { componentFileExtension, componentEntryPoint, componentFileNameExtension, styleSheetFileSuffixExtension, testingFileExtension, styleSheetFileExtension } = promptResponse;
   const BaseComponentName = 'Button';
   const deductedFileExtension = componentFileExtension === '.tsx' || componentFileExtension === '.ts' ? '.ts' : '.js';
   const overwriteResponse = await inquirer.prompt([
@@ -105,7 +98,7 @@ async function buildConfig(promptResponse: IPromptResponse) {
       name: 'overwrite',
       message() {
         return `Here is what your component folder will look like, but you will always have the option to select only those that you need ! Does that suit you ?
-    ./src/component/
+    ./${sanitizePath(componentEntryPoint)}/
           - ${BaseComponentName}${componentFileNameExtension === 'none' ? componentFileExtension : componentFileNameExtension}          (Component)
           - ${BaseComponentName}.props${deductedFileExtension}          (Props)
           - ${BaseComponentName}${styleSheetFileSuffixExtension === 'none' ? styleSheetFileExtension : styleSheetFileSuffixExtension}          (Style)
