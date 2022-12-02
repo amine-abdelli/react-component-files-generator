@@ -1,8 +1,9 @@
 import inquirer from 'inquirer';
 import { doesFileExists, log } from '../utils';
 import { IConfigObject } from '../types';
+import { defaultComponentEntryPointPath } from '../constants/path';
 
-async function componentBuildPrompt(configRest: IConfigObject) {
+async function componentBuildPrompt(configRest: IConfigObject, componentEntryPoint: string) {
   const classifiedResponse: any[] = [];
   const { fileCheckboxes, chosenComponentName } = await inquirer.prompt([
     {
@@ -22,9 +23,8 @@ async function componentBuildPrompt(configRest: IConfigObject) {
       type: 'confirm',
       name: 'shouldContinue',
       message: 'This component already exists and will be erase if you continue. Are sure you want to go further ?',
-      // TODO: IF USER WANTS TO ERASE, DELETE FOLDER BEFORE RECREATING IT
       when({chosenComponentName}) {
-        if(doesFileExists(chosenComponentName, configRest.component?.path || configRest.componentEntryPoint || `./src/components/`)) {
+        if(doesFileExists(chosenComponentName, configRest.component?.path || componentEntryPoint || `${defaultComponentEntryPointPath}`)) {
           return true;
         }
         return false;
