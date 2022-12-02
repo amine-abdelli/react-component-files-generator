@@ -40,3 +40,5 @@ export interface IPromptResponse {
   styleSheetFileSuffixExtension: string,
   testingFileExtension: string,
 }
+
+export type CliOptionType = '--build' | '-b' | '--init' | '-i' | '--update' | '-u' | '--version' | '-v' | '--help' | '-h';
