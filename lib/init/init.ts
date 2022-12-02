@@ -6,7 +6,7 @@ import { checkConfigFilePrompt, triggerPromptOption } from './prompt.init';
 
 export async function runInit() {
   if (!isReactOrNextInstalled()) {
-    log('No React or Next.js project could be found, please install one of theme before going further');
+    return log('No React or Next.js project could be found in your dependencies, please install one of theme before going further');
   }
   if (doesConfigFileExists()) {
     const overwriteResponse = await checkConfigFilePrompt();
