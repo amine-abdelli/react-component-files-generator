@@ -48,7 +48,7 @@ async function triggerPromptOption() {
         type: 'list',
         name: 'componentFileNameExtension',
         message({ componentFileExtension }) {
-          return `Would you like to add a name extension to your component ? (example: ${`Button.component${componentFileExtension}`})`
+          return `Choose a name extension for your component (e.g: ${`Button.component${componentFileExtension}, Button${componentFileExtension}`})`
         },
         choices({ componentFileExtension }) {
           return [`.component${componentFileExtension}`, 'none']
@@ -65,7 +65,7 @@ async function triggerPromptOption() {
       {
         type: 'list',
         name: 'styleSheetFileSuffixExtension',
-        message: 'What file name extension do you prefer ? (example: Button.style.scss)',
+        message: 'Choose a name extension for your style sheet (e.g: Button.style.scss)',
         choices({ styleSheetFileExtension, componentFileExtension }) {
           const styleSheetExtension = styleSheetFileExtension === 'styled component' ? componentFileExtension : styleSheetFileExtension;
           return [`.style${styleSheetExtension}`, `.module${styleSheetExtension}`, `.styled${styleSheetExtension}`, 'none']
@@ -76,7 +76,7 @@ async function triggerPromptOption() {
         type: 'list',
         name: 'testingFileExtension',
         message({ componentFileExtension }) {
-          return `Choose your prefered file extension ? (example: Button.spec${componentFileExtension})`;
+          return `Choose a name extension for your testing file (e.g: Button.spec${componentFileExtension})`;
         },
         choices({ componentFileExtension }) {
           return [`.spec${componentFileExtension}`, `.test${componentFileExtension}`, 'none']
