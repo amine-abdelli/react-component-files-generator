@@ -1,21 +1,21 @@
 # react-component-files-generator
-## *react-component-files-generator* is a CLI tool helping developers creating react components faster with a simple command.
- 
-## Getting started
+
+> **Warning**
+> This documentation is still being drafted
+
+### react-component-files-generator is a CLI tool helping developers creating react components faster with a simple command.
+
+## Usage
 ### Install rcfg using npm :
 ```typescript
   npm install react-component-files-generator
 ```
-### Init rcfg to an existing react project running the following command:
+### Init rcfg to an existing react project by running the following command:
 ```
   npx rcfg --init
 ```
-### You can now generate components by running:
-```
-  npx rcfg --build
-```
-
-#### By default components are generated in the same folder but you can change it by editing config file as well as everything else:
+![carbon](https://user-images.githubusercontent.com/77112257/205501760-78b104a0-013c-4074-baf0-10b7c98b3960.png)
+#### By default, components are generated in the same folder but you can change it by editing the config file:
 ```
 |-- /src
     |-- /components
@@ -24,6 +24,54 @@
             |-- Button.props.js
             |-- Button.style.scss
             |-- Button.test.js
+```
+### You can now generate components by running:
+```
+  npx rcfg --build
+```
+![carbon (3)](https://user-images.githubusercontent.com/77112257/205502405-ecd6bfb4-b694-4260-bf5c-d822f60a662a.png)
+
+### Files generated are autofilled with generic content and the imports needed :
+##### Component - (e.g. Button.component.tsx)
+```jsx
+import React from 'react';
+import './Button.module.scss';
+import { ButtonProps } from './Button.props.ts';
+
+const Button = (): ButtonProps => {
+  return (
+    <div>Button</div>
+  )
+}
+
+export { Button };
+```
+##### Testing file - (e.g. Button.test.tsx)
+```jsx
+import { render } from '@testing-library/react';
+import { Button } from './Button.component.tsx';
+
+const component = () => {
+    return <Button />;
+};
+
+describe('[Component] Button', () => {
+    let container: any = null;
+
+    beforeEach(() => {
+        container = document.createElement('div');
+        document.body.appendChild(container);
+    });
+
+    afterEach(() => {
+        container.remove();
+        container = null;
+    });
+
+    it('should render Button component', () => {
+        render(component(), container);
+    });
+})
 ```
 
 ## Config File
