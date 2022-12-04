@@ -8,12 +8,12 @@ import { log } from './log.utils';
  * @param promptResponse 
  */
 function writeJsonConfigFile(promptResponse: IConfigObject) {
-  fs.writeFile("rfsb.config.json", JSON.stringify(promptResponse, null, 4), 'utf8', function (err) {
+  fs.writeFile("rcfg.config.json", JSON.stringify(promptResponse, null, 4), 'utf8', function (err) {
     if (err) {
       log("An error occured while writing JSON Object to File.");
       return log(err?.message);
     }
-    log("rfsb.config.json created successfully !");
+    log("rcfg.config.json created successfully !");
   });
 }
 
@@ -73,10 +73,10 @@ function isReactOrNextInstalled() {
 
 /**
  * Check if config file exists in the working directory
- * @returns true if rfsb.config.json file exists
+ * @returns true if rcfg.config.json file exists
  */
 function doesConfigFileExists() {
-  return fs.readdirSync('.').includes('rfsb.config.json');
+  return fs.readdirSync('.').includes('rcfg.config.json');
 };
 
 /**

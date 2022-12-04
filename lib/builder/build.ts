@@ -5,13 +5,13 @@ import { quitPrompt } from '../utils/prompt.utils';
 import { componentBuildPrompt } from './prompt.build';
 
 export async function runBuild() {
-  // Get configs from rfsb.config.json file
+  // Get configs from rcfg.config.json file
   if(!doesConfigFileExists()){
     log('We couldn\'t find any config file in your current working directory.', 'warning');
-    log('     Please first run the following command : rfsb --init');
+    log('     Please first run the following command : rcfg --init');
     quitPrompt();
   }
-  const { name, componentEntryPoint, ...configRest } = JSON.parse(fs.readFileSync('rfsb.config.json', { encoding: 'utf8' }));
+  const { name, componentEntryPoint, ...configRest } = JSON.parse(fs.readFileSync('rcfg.config.json', { encoding: 'utf8' }));
   // Clean component entry point path
   const COMPONENTS_ROOT_DIR = sanitizePath(componentEntryPoint);
 

@@ -1,5 +1,5 @@
 /node_modules
-rfsb.config.json
+rcfg.config.json
 src
 dist
 yarn.lock

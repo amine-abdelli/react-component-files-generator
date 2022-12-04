@@ -3,7 +3,7 @@
 !*.d.ts
 src
 lib
-rfsb.config.json
+rcfg.config.json
 node_modules
 tsconfig.json
 package-lock.json

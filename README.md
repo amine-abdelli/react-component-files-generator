@@ -1,18 +1,18 @@
-# react-component-builder
-## *react-component-builder* is a CLI tool helping developers creating react components faster with a simple command.
+# react-component-files-generator
+## *react-component-files-generator* is a CLI tool helping developers creating react components faster with a simple command.
  
 ## Getting started
-### Install rcb using npm :
+### Install rcfg using npm :
 ```typescript
-  npm install react-component-builder
+  npm install react-component-files-generator
 ```
-### Init rcb to an existing react project running the following command:
+### Init rcfg to an existing react project running the following command:
 ```
-  npx rcb --init
+  npx rcfg --init
 ```
 ### You can now generate components by running:
 ```
-  npx rcb --build
+  npx rcfg --build
 ```
 
 #### By default components are generated in the same folder but you can change it by editing config file as well as everything else:
@@ -28,7 +28,7 @@
 
 ## Config File
 
-When you run --init for the first time, it will ask you a series of questions to customize the cli to your needs and will generate a "rcb.config.json" config file.
+When you run --init for the first time, it will ask you a series of questions to customize the cli to your needs and will generate a "rcfg.config.json" config file.
 
 #### Example of the **rfsb.config.json** config file:
 
