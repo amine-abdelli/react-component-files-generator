@@ -10,7 +10,7 @@ import { IConfigObject } from '../types';
  */
 function sanitizePath(path: string): string {
   let sanitizedPath = path;
-  if(path.at(-1) === '/') {
+  if(path[path.length - 1] === '/') {
     sanitizedPath = path.slice(0, -1);
   }
   return sanitizedPath.replace(PathPolicyRegex, '');
