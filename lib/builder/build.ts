@@ -46,11 +46,11 @@ export async function runBuild() {
 
       // Dynamically replace template's tags with the right content
       const formatedTemplate = JSON.stringify(readTemplateFile(key))
-        .replaceAll(ComponentNameTemplate, ComponentName)
-        .replaceAll(ComponentExportTemplate, componentExportString)
-        .replaceAll(StyleImportTemplate, hasStyle ? styleImportString : '')
-        .replaceAll(PropsImportTemplate, propsImportString)
-        .replaceAll(PropsTemplate, props);
+        .replace(new RegExp(ComponentNameTemplate, 'g'), ComponentName)
+        .replace(new RegExp(ComponentExportTemplate, 'g'), componentExportString)
+        .replace(new RegExp(StyleImportTemplate, 'g'), hasStyle ? styleImportString : '')
+        .replace(new RegExp(PropsImportTemplate, 'g'), propsImportString)
+        .replace(new RegExp(PropsTemplate, 'g'), props);
 
       // Build component file
       buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, JSON.parse(formatedTemplate));
@@ -61,8 +61,8 @@ export async function runBuild() {
 
       // Dynamically replace template's tags with the right content
       const formatedTemplate = JSON.stringify(readTemplateFile(key))
-        .replaceAll(ComponentNameTemplate, ComponentName)
-        .replaceAll(ComponentImportTemplate, FULL_COMPONENT_FILE_IMPORT_STRING);
+        .replace(new RegExp(ComponentNameTemplate, 'g'), ComponentName)
+        .replace(new RegExp(ComponentImportTemplate, 'g'), FULL_COMPONENT_FILE_IMPORT_STRING);
 
       // Build test file
       buildFile(`${RELATIVE_PATH}/${FILE_NAME}`, JSON.parse(formatedTemplate));
@@ -70,7 +70,7 @@ export async function runBuild() {
     if (key === 'props') {
       // Dynamically replace template's tags with the right content
       const formatedTemplate = JSON.stringify(readTemplateFile(key))
-        .replaceAll(ComponentNameTemplate, ComponentName);
+      .replace(new RegExp(ComponentNameTemplate, 'g'), ComponentName);
 
       // Build props file
       buildFile(`${COMPONENTS_ROOT_DIR}/${ComponentName}/${FILE_NAME}`, JSON.parse(formatedTemplate));
