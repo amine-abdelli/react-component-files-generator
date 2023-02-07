@@ -1,6 +1,7 @@
-/node_modules
+node_modules
 rcfg.config.json
 src
 dist
 yarn.lock
 .yarn-integrity
+.env
