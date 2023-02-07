@@ -15,7 +15,7 @@
   npx rcfg --init
 ```
 ![carbon](https://user-images.githubusercontent.com/77112257/205501760-78b104a0-013c-4074-baf0-10b7c98b3960.png)
-#### By default, components are generated in the same folder but you can change it by editing the config file:
+#### By default, components are generated in the same folder but you can customize paths by adding `"path"` props in the config file:
 ```
 |-- /src
     |-- /components
@@ -33,6 +33,7 @@
 
 ### Files generated are autofilled with generic content and the imports needed :
 ##### Component - (e.g. Button.component.tsx)
+Imports are dynamically generated depending on files location in the file tree. 
 ```jsx
 import React from 'react';
 import './Button.module.scss';
@@ -78,7 +79,12 @@ describe('[Component] Button', () => {
 
 When you run --init for the first time, it will ask you a series of questions to customize the cli to your needs and will generate a "rcfg.config.json" config file.
 
-#### Example of the **rfsb.config.json** config file:
+#### Example of the **rcfg.config.json** config file:
+Note that the path prop can handle this template `<%component_name%>` to dynamically create file in a folder holding the component name you're creating : 
+
+Example for a Button.component.tsx component:
+```"./src/style/<%component_name%>"```
+```"./src/style/Button/Button.component.tsx"```
 
 ```json
 {
@@ -87,16 +93,18 @@ When you run --init for the first time, it will ask you a series of questions to
     "component": {
         "extension": ".tsx",
         "nameExtension": ".component.tsx",
-        "export": "default"
+        "export": "default" // For component file only
     },
     "style": {
         "extension": ".less",
         "nameExtension": ".module.less",
-        "module": true
+        "module": true, // For style file only
+        "path": "./src/style/<%component_name%>"
     },
     "test": {
         "extension": ".tsx",
-        "nameExtension": ".test.tsx"
+        "nameExtension": ".test.tsx",
+        "path": "./src/__test__/<%component_name%>"
     },
     "props": {
         "extension": ".ts",
@@ -108,3 +116,36 @@ When you run --init for the first time, it will ask you a series of questions to
     }
 }
 ```
+
+# Config options
+
+### `extension` (required)
+- Type: `string`
+- Example value: `.js`, `.jsx`, `.ts`, `.tsx`, `.scss`, `.less`, ... 
+This value must start with a dot.
+define ...
+
+### `nameExtension` (required)
+- Type: `string`
+- Example value: `.component.tsx`, `.props.js`, `.module.css`, `null`, ...
+This value must start with a dot
+define ...
+
+### `module` (optional) - For style file only
+ - Type: `boolean`
+ - Value: `true`, `false`
+
+### `export` (optional) - For component only
+// output: export { Component }; OR export default Component;
+### `path` (optional) - For component only
+ - Type: `string`
+ - Example value: `./src/__test__/<%component_name%>`, `src/style`, ...
+Boolean
+default style
+"extension"  - ts tsx js jsx scss less css
+"nameExtension" - e.g Button.props.ts
+"path" - you can specify a path where you want to deploy. Path will be dynamically changed depending on where other elements are located.
+
+### For style related file
+"module" boolean - rather if the element is a css module or not
+

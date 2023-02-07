@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import path from 'path';
-import { findDependenciesFromJsonPackage, sanitizePath, writeJsonConfigFile } from '../utils';
+import { findDependenciesFromJsonPackage, removeLeadingSlashes, writeJsonConfigFile } from '../utils';
 import { formatResponseObjectToConfigFile } from '../utils/config.utils';
 import { IPromptResponse } from '../types';
 
@@ -98,7 +98,7 @@ async function buildConfig(promptResponse: IPromptResponse) {
       name: 'overwrite',
       message() {
         return `Here is what your component folder will look like, but you will always have the option to select only those that you need ! Does that suit you ?
-    ./${sanitizePath(componentEntryPoint)}/
+    ./${removeLeadingSlashes(componentEntryPoint)}/
           - ${BaseComponentName}${componentFileNameExtension === 'none' ? componentFileExtension : componentFileNameExtension}          (Component)
           - ${BaseComponentName}.props${deductedFileExtension}          (Props)
           - ${BaseComponentName}${styleSheetFileSuffixExtension === 'none' ? styleSheetFileExtension : styleSheetFileSuffixExtension}          (Style)
