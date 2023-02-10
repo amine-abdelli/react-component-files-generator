@@ -10,7 +10,6 @@ Create github actions that:
   - CHANGELOG check on pull request creation
   - Build and publish on merge to master
 
-
 ## 1.1.0 - (07.02.2023)
 
 _Feat_
