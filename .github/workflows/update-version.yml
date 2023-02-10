@@ -1,0 +1,38 @@
+name: Update Package Version and Create GitHub Release
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Update version
+      run: |
+        BRANCH_NAME=$(echo "$GITHUB_REF" | awk -F/ '{print $3}')
+        if [[ "$BRANCH_NAME" == feat/* ]]; then
+          NEW_VERSION=$(npm version minor)
+        elif [[ "$BRANCH_NAME" == fix/* ]]; then
+          NEW_VERSION=$(npm version patch)
+        elif [[ "$BRANCH_NAME" == chore/* ]]; then
+          NEW_VERSION=$(npm version patch)
+        elif [[ "$BRANCH_NAME" == docs/* ]]; then
+          NEW_VERSION=$(npm version patch)
+        elif [[ "$BRANCH_NAME" == refactor/* ]]; then
+          NEW_VERSION=$(npm version patch)
+        elif [[ "$BRANCH_NAME" == test/* ]]; then
+          NEW_VERSION=$(npm version patch)
+        fi
+        echo "Branch name: $BRANCH_NAME, new version: $NEW_VERSION"
+
+    - name: Commit and push changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "chore(version): Update package version to $NEW_VERSION"
+        push: true
