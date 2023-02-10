@@ -1,7 +1,10 @@
+import { ComponentNameTemplate } from '../constants/template';
 import fs from 'fs';
 import path from 'path';
 import { IConfigObject } from '../types';
+import { getFullFileNames } from './config.utils';
 import { log } from './log.utils';
+import { sanitizeConfigPaths } from './sanitize.utils';
 
 /**
  * Create a config file filled with prompt user response
@@ -45,8 +48,9 @@ function createDirIfNotExist(path: string): void {
  * @param path 
  * @param content The content we want to populate the new file with
  */
-function buildFile(path: string, content: string) {
-  fs.writeFile(path, content, err => {
+function writeFile(path: string, fileName: string, content: string) {
+  createDirIfNotExist(path);
+  fs.writeFile(`${path}/${fileName}`, content, err => {
     if (err) {
       console.error(err);
     }
@@ -111,7 +115,18 @@ function doesFileExists(componentName: string, componentDir: string) {
   return dir.includes(componentName)
 }
 
+function createFiles(config: IConfigObject, componentName: string, responseTypes: any[]) {  
+  const { componentEntryPoint } = config;
+  for (const [key, aConfig] of Object.entries(sanitizeConfigPaths(config, componentName))) {
+  const FILE_NAMES = getFullFileNames(config, componentName);
+    const PATH_TO_CREATE_IF_NOT_EXIST = aConfig.path?.replace(ComponentNameTemplate, componentName) || `${componentEntryPoint}/${componentName}`;
+    const FILE_NAME = FILE_NAMES[key];
+    if (!responseTypes.includes(key)) continue;
+    writeFile(`${PATH_TO_CREATE_IF_NOT_EXIST}`, FILE_NAME, '');
+  }
+}
+
 export {
-  createDirIfNotExist, buildFile, readTemplateFile, getProjectDependencies, writeJsonConfigFile, doesConfigFileExists, isReactOrNextInstalled,
-  findDependenciesFromJsonPackage, doesFileExists
+  createDirIfNotExist, writeFile, readTemplateFile, getProjectDependencies, writeJsonConfigFile, doesConfigFileExists, isReactOrNextInstalled,
+  findDependenciesFromJsonPackage, doesFileExists, createFiles
 };

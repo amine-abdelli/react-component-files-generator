@@ -1,33 +1,40 @@
-const fs = require('fs');
-const path = require('path');
-const FILE_NAMES = ['Button.component.tsx',
-'Button.spec.tsx',
-'Button.style.css']
+import * as path from 'path';
+import * as fs from 'fs';
+
 /**
- * Explores recursively a directory and returns all the filepaths and folderpaths in the callback.
- * 
- * @see http://stackoverflow.com/a/5827895/4241030
- * @param {String} dir 
+ * Return the relative path of a file (to) compared with file of reference (from)
+ * @param from file of reference
+ * @param to file to find the relative path
+ * @returns a path
  */
-export function filewalker(dir: any) {
-  const RESULTS: string[] = []
-  fs.readdir(dir, {}, function (_: any, list: any) {
-    list
-      .filter((folder: string) => folder !== 'node_modules' && folder !== '.git')
-      .forEach(function (file: any) {
-        if(FILE_NAMES.includes(file)) {
-          RESULTS.push(path.resolve(dir, file))
-          console.log(path.resolve(dir, file))
+export function findRelativePath(from: string, to: string): string {
+    const findFile = (dir: string, fileName: string): string => {
+        if (path.basename(dir) === 'node_modules') {
+            return '';
         }
-        if(FILE_NAMES.length === RESULTS.length) return RESULTS
-        file = path.resolve(dir, file);
-        fs.stat(file, function (err: any, stat: any) {
-          // If directory, execute a recursive call
-          if (stat && stat.isDirectory()) {
-            filewalker(file);
-          }
-        });
-      });
-      return RESULTS;
-  });
-};
+
+        const files = fs.readdirSync(dir);
+        for (const file of files) {
+            const filePath = path.join(dir, file);
+            const stat = fs.statSync(filePath);
+            if (stat.isDirectory()) {
+                const result = findFile(filePath, fileName);
+                if (result) {
+                    return result;
+                }
+            } else if (file === fileName) {
+                return filePath;
+            }
+        }
+        return '';
+    };
+
+    const fromPath = findFile(process.cwd(), from);
+    const toPath = findFile(process.cwd(), to);
+    return path.relative(path.dirname(fromPath), path.dirname(toPath));
+}
+
+// Generate a full path
+export function generateFullPath(from: string, to: string) {
+ return `${findRelativePath(from, to).replace(/\\/g, '/')}/${to}`
+}
