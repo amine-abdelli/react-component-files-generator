@@ -11,8 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: develop
 
     - name: Determine version bump
       id: version-bump
@@ -26,9 +28,9 @@ jobs:
     - name: Update package.json version
       run: |
         npm install
-        current_version=$(node -p "require('./package.json').version")
+        current_version=$(jq -r '.version' package.json)
         new_version=$(npm version --no-git-tag-version ${{ steps.version-bump.outputs.bump }})
-        node -e "const fs = require('fs'); const package = require('./package.json'); package.version = '$new_version'; fs.writeFileSync('./package.json', JSON.stringify(package, null, 2));"
+          jq --arg new_version "$new_version" '.version = $new_version' package.json > package.json.tmp && mv package.json.tmp package.json
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
         git add package.json
