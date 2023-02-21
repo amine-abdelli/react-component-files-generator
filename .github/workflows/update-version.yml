@@ -1,10 +1,10 @@
-name: Update package.json version on pull request merge to develop
+name: Update package.json version on merge to develop
 
 on:
   pull_request:
     types: [closed]
     branches:
-      - develop
+      - ci-test
 
 jobs:
   update-version:
