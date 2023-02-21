@@ -25,11 +25,12 @@ jobs:
 
     - name: Update package.json version
       run: |
-        current_version=$(jq -r '.version' package.json)
+        npm install
+        current_version=$(node -p "require('./package.json').version")
         new_version=$(npm version --no-git-tag-version ${{ steps.version-bump.outputs.bump }})
-        jq --arg new_version "$new_version" '.version = $new_version' package.json > package.tmp.json && mv package.tmp.json package.json
+        node -e "const fs = require('fs'); const package = require('./package.json'); package.version = '$new_version'; fs.writeFileSync('./package.json', JSON.stringify(package, null, 2));"
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
         git add package.json
-        git commit -m "chore(CI): Update version to $new_version"
+        git commit -m "Update version to $new_version"
         git push
