@@ -21,10 +21,9 @@ jobs:
       run: |
         if [[ ${{ github.head_ref }} == feat/* ]]; then
           echo "::set-output name=bump::minor"
-        elif [[ ${{ github.head_ref }} == docs/* || ${{ github.head_ref }} == fix/* || ${{ github.head_ref }} == refactor/* || ${{ github.head_ref }} == test/* ]]; then
+        elif [[ ${{ github.head_ref }} == docs/* || ${{ github.head_ref }} == fix/* || ${{ github.head_ref }} == refactor/* || ${{ github.head_ref }} == test/* || ${{ github.head_ref }} == chore/* ]]; then
           echo "::set-output name=bump::patch"
         fi
-
     - name: Update package.json version
       run: |
         npm install
