@@ -1,10 +1,10 @@
-name: Update package.json version on pull request merge to develop
+name: Update package.json version on merge to develop
 
 on:
   pull_request:
     types: [closed]
     branches:
-      - develop
+      - ci-test
 
 jobs:
   update-version:
@@ -24,7 +24,6 @@ jobs:
         elif [[ ${{ github.head_ref }} == docs/* || ${{ github.head_ref }} == fix/* || ${{ github.head_ref }} == refactor/* || ${{ github.head_ref }} == test/* || ${{ github.head_ref }} == chore/* ]]; then
           echo "::set-output name=bump::patch"
         fi
-
     - name: Update package.json version
       run: |
         npm install
