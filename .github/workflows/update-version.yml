@@ -4,15 +4,17 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - develop
+      - ci-test
 
 jobs:
   update-version:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: develop
 
     - name: Determine version bump
       id: version-bump
