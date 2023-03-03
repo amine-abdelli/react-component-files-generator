@@ -1,7 +1,7 @@
 {
   "name": "react-component-files-generator",
   "description": "A CLI that helps developers generating react folder structure for your project",
-  "version": "{\n  'react-component-files-generator': '1.0.8',\n  npm: '9.3.1',\n  node: '18.14.1',\n  v8: '10.2.154.23-node.22',\n  uv: '1.44.2',\n  zlib: '1.2.13',\n  brotli: '1.0.9',\n  ares: '1.18.1',\n  modules: '108',\n  nghttp2: '1.51.0',\n  napi: '8',\n  llhttp: '6.0.10',\n  uvwasi: '0.0.14',\n  acorn: '8.8.1',\n  simdutf: '3.1.0',\n  undici: '5.19.1',\n  openssl: '3.0.8+quic',\n  cldr: '42.0',\n  icu: '72.1',\n  tz: '2022g',\n  unicode: '15.0',\n  ngtcp2: '0.8.1',\n  nghttp3: '0.7.0'\n}",
+  "version": "1.1.0",
   "main": "lib/index.ts",
   "author": "Amine Abdelli <amine.abdelli@outlook.fr>",
   "keywords": [
