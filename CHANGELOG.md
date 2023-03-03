@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.1.3 - (03.03.2023)
+
+_Fix_
+
+  - Fix CHANGELOG check
+
 ## 1.1.2 - (03.03.2023)
 
 _CI_
