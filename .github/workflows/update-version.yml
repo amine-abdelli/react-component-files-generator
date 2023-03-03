@@ -3,7 +3,7 @@ name: Update package version
 on:
   push:
     branches:
-      - ci-test
+      - develop
 
 jobs:
   update_version:
