@@ -22,8 +22,8 @@ jobs:
 
       - name: Commit version update
         run: |
-          git config --global user.email ${{ secrets.USER_EMAIL }}
-          git config --global user.name ${{ secrets.USERNAME }}
+          git config --global user.email "amine.abdelli@outlook.fr"
+          git config --global user.name "amine-abdelli"
           git commit -am "chore(release): update package version [skip ci]"
 
       - name: Push changes
