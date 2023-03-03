@@ -6,7 +6,7 @@ on:
 
 jobs:
   changelog_check:
-    runs-on: [self-hosted, Linux, standard]
+    runs-on: ubuntu-latest
     name: 🩺 Check Changelog
     steps:
       - uses: actions/checkout@v2
