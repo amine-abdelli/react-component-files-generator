@@ -1,0 +1,22 @@
+name: Changelog Check
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  changelog_check:
+    runs-on: ubuntu-latest
+    name: 🩺 Check Changelog
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Changelog
+        run: |
+          git fetch
+          echo "base ref is main checking changelog..."
+          if [ -z "$(git diff --name-only origin/${{ github.base_ref }} | grep CHANGELOG.md)" ]; then
+            echo "[FAIL] - Changelog has not been updated"
+            exit 1
+          else
+            echo "[SUCCESS] - Changelog has been updated"
+          fi

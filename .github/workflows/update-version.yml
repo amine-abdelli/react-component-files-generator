@@ -1,0 +1,35 @@
+name: Update package version
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+
+jobs:
+  update_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Update package version
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/feat/* ]]; then
+            npm version minor --no-git-tag-version
+          else
+            npm version patch --no-git-tag-version
+          fi
+
+      - name: Commit version update
+        run: |
+          git config --global user.email "amine.abdelli@outlook.fr"
+          git config --global user.name "amine-abdelli"
+          git commit -am "chore(release): update package version [skip ci]"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true

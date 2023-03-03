@@ -4,16 +4,12 @@ import { IConfigObject } from '../types';
 
 /**
  * Remove ./ or / at the begining of the path and / at the end of the path
- * e.g ./components/Button/ => components/Button
+ * e.g "./components/Button/" => "components/Button"
  * @param path
  * @returns {string}
  */
-function sanitizePath(path: string): string {
-  let sanitizedPath = path;
-  if(path[path.length - 1] === '/') {
-    sanitizedPath = path.slice(0, -1);
-  }
-  return sanitizedPath.replace(PathPolicyRegex, '');
+function removeLeadingSlashes(path: string): string {
+  return path.replace(/^(\.\/|\/)+/, '').replace(/\/+$/, '');
 }
 
 /**
@@ -24,9 +20,9 @@ function sanitizePath(path: string): string {
  */
 function sanitizeConfigPaths(config: IConfigObject, componentName: string) {
   for(const aConfig of Object.values(config)) {
-    if(aConfig.path) aConfig.path = sanitizePath(aConfig.path).replace(ComponentNameTemplate, componentName);
+    if(aConfig.path) aConfig.path = removeLeadingSlashes(aConfig.path).replace(ComponentNameTemplate, componentName);
   }
   return config;
 }
 
-export { sanitizeConfigPaths, sanitizePath}
+export { sanitizeConfigPaths, removeLeadingSlashes}
