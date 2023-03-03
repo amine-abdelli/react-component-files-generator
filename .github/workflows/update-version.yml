@@ -1,7 +1,8 @@
 name: Update package version
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - develop
 
