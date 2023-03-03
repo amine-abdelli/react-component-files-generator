@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.1.2 - (03.03.2023)
+
+_CI_
+
+  - Check that the CHANGELOG has been well updated
+
 ## 1.1.1 - (03.03.2023)
 
 _CI_
