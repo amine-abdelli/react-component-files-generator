@@ -123,20 +123,19 @@ Example for a Button.component.tsx component:
 - Type: `string`
 - Example value: `.js`, `.jsx`, `.ts`, `.tsx`, `.scss`, `.less`, ... 
 This value must start with a dot.
-define ...
 
 ### `nameExtension` (required)
 - Type: `string`
 - Example value: `.component.tsx`, `.props.js`, `.module.css`, `null`, ...
-This value must start with a dot
-define ...
+This value must start with a dot.
 
 ### `module` (optional) - For style file only
  - Type: `boolean`
  - Value: `true`, `false`
 
 ### `export` (optional) - For component only
-// output: export { Component }; OR export default Component;
+output: export { Component }; OR export default Component;
+
 ### `path` (optional) - For component only
  - Type: `string`
  - Example value: `./src/__test__/<%component_name%>`, `src/style`, ...
