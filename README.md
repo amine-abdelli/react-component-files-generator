@@ -134,11 +134,17 @@ This value must start with a dot.
  - Value: `true`, `false`
 
 ### `export` (optional) - For component only
-export { Component }; OR export default Component;
+output: export { Component }; OR export default Component;
 
 ### `path` (optional) - For component only
-You can specify a path where you want to create your files in. Paths will be dynamically generated depending on where other files are located. You can also chose to create your file in a folder holding the component name using the <%component_name%> template.
  - Type: `string`
  - Example value: `./src/__test__/<%component_name%>`, `src/style`, ...
- - Example output: `./src/__test__/Button/Button.props.ts`, `src/style/Button.props`
- 
+Boolean
+default style
+"extension"  - ts tsx js jsx scss less css
+"nameExtension" - e.g Button.props.ts
+"path" - you can specify a path where you want to deploy. Path will be dynamically changed depending on where other elements are located.
+
+### For style related file
+"module" boolean - rather if the element is a css module or not
+
