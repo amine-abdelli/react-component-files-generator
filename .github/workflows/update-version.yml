@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - develop
+      - master
 
 jobs:
   update_version:
@@ -13,9 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Get the source branch name
+        id: get_source_branch_name
+        run: echo ::set-output name=branch::${{ github.event.pull_request.head.ref }}
+      
       - name: Update package version
         run: |
-          if [[ ${{ github.ref }} == refs/heads/feat/* ]]; then
+          BRANCH_NAME="${{ steps.get_source_branch_name.outputs.branch }}"
+          if [[ $BRANCH_NAME == break/* ]]; then
+            npm version major --no-git-tag-version
+          elif [[ $BRANCH_NAME == feat/* ]]; then
             npm version minor --no-git-tag-version
           else
             npm version patch --no-git-tag-version
@@ -31,5 +38,5 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ${{ github.event.pull_request.base.ref }}
           force: true
