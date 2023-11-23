@@ -1,7 +1,7 @@
 
 import { doesConfigFileExists, isReactOrNextInstalled, log } from '../utils';
 import { quitPrompt } from '../utils/prompt.utils';
-import { checkConfigFilePrompt, triggerPromptOption } from './prompt.init';
+import { checkConfigFilePrompt, triggerPromptOption } from '../prompts/init.prompt';
 
 export async function runInit() {
   if (!isReactOrNextInstalled() && process.env.NODE_ENV !== 'development') {

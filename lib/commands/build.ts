@@ -3,11 +3,11 @@ import { generateFullPath } from '../utils/path.utils';
 import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, PropsImportTemplate, PropsTemplate, StyleImportTemplate } from '../constants';
 import { sanitizeConfigPaths, removeLeadingSlashes, writeFile, readTemplateFile, doesConfigFileExists, log, getFullFileNames, createFiles } from '../utils';
 import { quitPrompt } from '../utils/prompt.utils';
-import { componentBuildPrompt } from './prompt.build';
+import { componentBuildPrompt } from '../prompts/build.prompt';
 
 export async function runBuild() {
   // Get configs from rcfg.config.json file
-  if(!doesConfigFileExists()){
+  if (!doesConfigFileExists()) {
     log('We couldn\'t find any config file in your current working directory.', 'warning');
     log('     Please first run the following command : rcfg --init');
     quitPrompt();
@@ -21,7 +21,7 @@ export async function runBuild() {
 
   const responsesType = promptResponse.map(({ type }) => type);
   const FILE_NAMES = getFullFileNames(configRest, ComponentName);
-  
+
   const RELATIVE_PATH = `${COMPONENTS_ROOT_DIR}/${ComponentName}/`;
   // Create all files
   // We need to create files first in order to get dynamically generated imports at the right place
@@ -40,9 +40,9 @@ export async function runBuild() {
       const STYLESHEET_IMPORT_PATH = `./${FILE_NAMES['style']}`;
       const PROPS_IMPORT_PATH = `./${FILE_NAMES['props']}`;
       const propsName = `${ComponentName}Props`;
-      const styleImportString = configRest.style.module 
-              ? `import styles from '${STYLESHEET_IMPORT_PATH}';` 
-              : `import '${STYLESHEET_IMPORT_PATH}';`;
+      const styleImportString = configRest.style.module
+        ? `import styles from '${STYLESHEET_IMPORT_PATH}';`
+        : `import '${STYLESHEET_IMPORT_PATH}';`;
 
       const hasProps = responsesType.includes('props');
       const hasStyle = responsesType.includes('style');
@@ -75,7 +75,7 @@ export async function runBuild() {
     if (key === 'props') {
       // Dynamically replace template's tags with the right content
       const formatedTemplate = JSON.stringify(readTemplateFile(key))
-      .replace(new RegExp(ComponentNameTemplate, 'g'), ComponentName);
+        .replace(new RegExp(ComponentNameTemplate, 'g'), ComponentName);
 
       // Build props file
       writeFile(`${PATH_TO_CREATE_IF_NOT_EXIST}`, FILE_NAME, JSON.parse(formatedTemplate));
