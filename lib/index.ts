@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { runBuild, runHelp, runInit } from 'commands';
+import { runBuild, runHelp, runInit } from './commands';
 import jsonPackage from '../package.json';
-import { log } from 'utils';
+import { log } from './utils';
 
 const knownOptions = ['--build', '-b', '--init', '-i', '--update', '-u', '--version', '-v', '--help', '-h'];
 
