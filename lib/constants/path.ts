@@ -1,1 +1,1 @@
-export const defaultComponentEntryPointPath = './src/components/'; 
+export const DEFAULT_COMPONENTS_PATH = './src/components'; 

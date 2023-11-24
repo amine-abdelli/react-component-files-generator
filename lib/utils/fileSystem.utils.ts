@@ -1,22 +1,24 @@
-import { ComponentNameTemplate } from '../constants/template';
 import fs from 'fs';
 import path from 'path';
+
+import { ComponentNameTemplate } from '../constants/template';
 import { IConfigObject } from '../types';
 import { getFullFileNames } from './config.utils';
 import { log } from './log.utils';
 import { sanitizeConfigPaths } from './sanitize.utils';
+import { CONFIG_FILE_NAME } from '../constants';
 
 /**
  * Create a config file filled with prompt user response
  * @param promptResponse 
  */
 function writeJsonConfigFile(promptResponse: IConfigObject) {
-  fs.writeFile("rcfg.config.json", JSON.stringify(promptResponse, null, 4), 'utf8', function (err) {
+  fs.writeFile(CONFIG_FILE_NAME, JSON.stringify(promptResponse, null, 4), 'utf8', function (err) {
     if (err) {
       log("An error occured while writing JSON Object to File.");
       return log(err?.message);
     }
-    log("rcfg.config.json created successfully !");
+    log(`${CONFIG_FILE_NAME} created successfully !`);
   });
 }
 
@@ -80,7 +82,7 @@ function isReactOrNextInstalled() {
  * @returns true if rcfg.config.json file exists
  */
 function doesConfigFileExists() {
-  return fs.readdirSync('.').includes('rcfg.config.json');
+  return fs.readdirSync('.').includes(CONFIG_FILE_NAME);
 };
 
 /**
@@ -110,15 +112,15 @@ function findDependenciesFromJsonPackage(lib: string | string[]) {
  * @returns true if the file exists in the given directory
  */
 function doesFileExists(componentName: string, componentDir: string) {
-  if(!fs.existsSync(componentDir)) return false;
+  if (!fs.existsSync(componentDir)) return false;
   const dir = fs.readdirSync(componentDir);
   return dir.includes(componentName)
 }
 
-function createFiles(config: IConfigObject, componentName: string, responseTypes: any[]) {  
+function createFiles(config: IConfigObject, componentName: string, responseTypes: any[]) {
   const { componentEntryPoint } = config;
   for (const [key, aConfig] of Object.entries(sanitizeConfigPaths(config, componentName))) {
-  const FILE_NAMES = getFullFileNames(config, componentName);
+    const FILE_NAMES = getFullFileNames(config, componentName);
     const PATH_TO_CREATE_IF_NOT_EXIST = aConfig.path?.replace(ComponentNameTemplate, componentName) || `${componentEntryPoint}/${componentName}`;
     const FILE_NAME = FILE_NAMES[key];
     if (!responseTypes.includes(key)) continue;

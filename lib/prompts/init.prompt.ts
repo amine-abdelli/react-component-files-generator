@@ -1,8 +1,10 @@
 import inquirer from 'inquirer';
 import path from 'path';
+
 import { findDependenciesFromJsonPackage, removeLeadingSlashes, writeJsonConfigFile } from '../utils';
 import { formatResponseObjectToConfigFile } from '../utils/config.utils';
 import { IPromptResponse } from '../types';
+import { CONFIG_FILE_NAME, DEFAULT_COMPONENTS_PATH, FileExtension } from '../constants';
 
 // Check if a config file already exists and ask for confirmation before erase it
 async function checkConfigFilePrompt() {
@@ -10,7 +12,7 @@ async function checkConfigFilePrompt() {
     {
       type: 'confirm',
       name: 'overwrite',
-      message: 'rcfs.config.json already exists ! Would you like to overwrite it?',
+      message: `${CONFIG_FILE_NAME} already exists ! Would you like to overwrite it?`,
       default: false
     }
   ])
@@ -34,15 +36,15 @@ async function triggerPromptOption() {
       {
         type: 'text',
         name: 'componentEntryPoint',
-        message: 'Which folder is the entry point of your components? (by default "./src/components")',
-        default: './src/components',
+        message: `Which folder is the entry point of your components? (by default "${DEFAULT_COMPONENTS_PATH}")`,
+        default: DEFAULT_COMPONENTS_PATH,
       },
       {
         type: 'list',
         name: 'componentFileExtension',
         message: 'What is the file extension of your components',
-        choices: ['.jsx', '.tsx', '.js', '.ts'],
-        default: findDependenciesFromJsonPackage('typescript') ? '.tsx' : '.jsx',
+        choices: [FileExtension.JSX, FileExtension.TSX, FileExtension.JS, FileExtension.TS],
+        default: findDependenciesFromJsonPackage('typescript') ? FileExtension.TSX : FileExtension.JSX,
       },
       {
         type: 'list',
@@ -53,13 +55,13 @@ async function triggerPromptOption() {
         choices({ componentFileExtension }) {
           return [`.component${componentFileExtension}`, 'none']
         },
-        default: `.component${findDependenciesFromJsonPackage('typescript') ? '.tsx' : '.jsx'}`,
+        default: `.component${findDependenciesFromJsonPackage('typescript') ? FileExtension.TSX : FileExtension.JSX}`,
       },
       {
         type: 'list',
         name: 'styleSheetFileExtension',
         message: 'What styling technology do you use ? Enter N if ...',
-        choices: ['.css', '.scss', '.less'],
+        choices: [FileExtension.CSS, FileExtension.SCSS, FileExtension.LESS],
         default: findDependenciesFromJsonPackage(['sass', 'less', 'scss']),
       },
       {

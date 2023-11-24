@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { generateFullPath } from '../utils/path.utils';
-import { ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, PropsImportTemplate, PropsTemplate, StyleImportTemplate } from '../constants';
+import { CONFIG_FILE_NAME, ComponentExportTemplate, ComponentImportTemplate, ComponentNameTemplate, PropsImportTemplate, PropsTemplate, StyleImportTemplate } from '../constants';
 import { sanitizeConfigPaths, removeLeadingSlashes, writeFile, readTemplateFile, doesConfigFileExists, log, getFullFileNames, createFiles } from '../utils';
 import { quitPrompt } from '../utils/prompt.utils';
 import { componentBuildPrompt } from '../prompts/build.prompt';
@@ -12,7 +12,7 @@ export async function runBuild() {
     log('     Please first run the following command : rcfg --init');
     quitPrompt();
   }
-  const config = JSON.parse(fs.readFileSync('rcfg.config.json', { encoding: 'utf8' }));
+  const config = JSON.parse(fs.readFileSync(CONFIG_FILE_NAME, { encoding: 'utf8' }));
   const { name, componentEntryPoint, ...configRest } = config;
   // Clean component entry point path
   const COMPONENTS_ROOT_DIR = removeLeadingSlashes(componentEntryPoint);

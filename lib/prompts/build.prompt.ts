@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import { doesFileExists, log } from '../utils';
 import { IConfigObject } from '../types';
-import { defaultComponentEntryPointPath } from '../constants/path';
+import { DEFAULT_COMPONENTS_PATH } from '../constants/path';
 
 async function componentBuildPrompt(configRest: IConfigObject, componentEntryPoint: string) {
   const classifiedResponse: any[] = [];
@@ -24,7 +24,7 @@ async function componentBuildPrompt(configRest: IConfigObject, componentEntryPoi
       name: 'shouldContinue',
       message: 'This component already exists and will be erase if you continue. Are sure you want to go further ?',
       when({ chosenComponentName }) {
-        if (doesFileExists(chosenComponentName, configRest.component?.path || componentEntryPoint || `${defaultComponentEntryPointPath}`)) {
+        if (doesFileExists(chosenComponentName, configRest.component?.path || componentEntryPoint || `${DEFAULT_COMPONENTS_PATH}/`)) {
           return true;
         }
         return false;
@@ -47,7 +47,7 @@ async function componentBuildPrompt(configRest: IConfigObject, componentEntryPoi
         })
       },
       when({ shouldContinue, chosenComponentName }) {
-        if (shouldContinue || !doesFileExists(chosenComponentName, configRest.component?.path || configRest.componentEntryPoint || './src/components')) return true;
+        if (shouldContinue || !doesFileExists(chosenComponentName, configRest.component?.path || configRest.componentEntryPoint || DEFAULT_COMPONENTS_PATH)) return true;
         return false;
       }
     }

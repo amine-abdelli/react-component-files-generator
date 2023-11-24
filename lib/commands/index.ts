@@ -1,3 +1,3 @@
-export * from './build';
-export * from './init';
-export * from './help';
+export * from './build.command';
+export * from './init.command';
+export * from './help.command';
